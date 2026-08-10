@@ -1,6 +1,6 @@
 # Terms
 
-## Container, Image, Registry, Dockerfile
+## Core Concepts: Container, Image, Registry, Dockerfile
 
 ### Container
 
