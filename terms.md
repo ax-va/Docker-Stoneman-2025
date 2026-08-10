@@ -24,7 +24,7 @@ Images can be pushed to a registry and pulled from it to run containers on diffe
 A *Dockerfile* defines the base image, application files, dependencies, configuration,
 and the command used to run the application.
 
-### Running a Container from an Image: From Registry to Running Container 
+#### Running a Container from an Image: From Registry to Running Container 
 
 ```
 Registry
@@ -38,7 +38,7 @@ Image
 Container
 ```
 
-### Building and publishing an Image: From Dockerfile to Registry
+#### Building and publishing an Image: From Dockerfile to Registry
 
 ```
 Dockerfile
