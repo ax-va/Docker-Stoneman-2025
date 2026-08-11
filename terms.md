@@ -13,6 +13,9 @@ A *container image* is a read-only package that contains an application, its dep
 and the configuration needed to run it.
 Images are used to create containers.
 
+An image is not a single file.
+A Docker image is composed of layers.
+
 ### Registry
 
 A *container registry* is a service for storing and distributing container images.
@@ -98,11 +101,12 @@ But serverless itself is not a container technology.
 
 ### Docker CLI and Docker Engine
 
-The *Docker CLI* is a client that sends commands to the *Docker Engine* through the *Docker API*.
+The *Docker CLI* is a client that communicates with the *Docker Engine* through the *Docker API*.
 
-The Docker Engine is the server that manages Docker objects such as images, containers, networks, and volumes.
+The Docker Engine is the server-side container platform responsible for 
+managing Docker objects such as images, containers, networks, and volumes.
 
-```shell
-Docker CLI (Client)
+### Docker Daemon
 
-```
+The Docker daemon (`dockerd`) is the main background process of Docker Engine.
+It listens for Docker API requests and manages Docker resources.

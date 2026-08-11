@@ -1,6 +1,6 @@
 # Docker-Stoneman-2025
 
-Original repository: https://github.com/sixeyed/diamol
+Source code: https://github.com/sixeyed/diamol/tree/2e
 
 ## On Windows and macOS
 
@@ -14,7 +14,7 @@ See the installation of Docker Desktop on Linux
 
 https://docs.docker.com/desktop/setup/install/linux/
 
-On Linux, you need only Docker CLI (client) and Docker Engine (server).
+On Linux, you need only Docker CLI (client), Docker Engine (server), and Docker Compose.
 
 - Show the Docker CLI version
 
@@ -56,3 +56,71 @@ On Linux, you need only Docker CLI (client) and Docker Engine (server).
       GitCommit:        de40ad0
     ```
 
+- Show the current Docker environment
+
+    ```shell
+    $ docker info
+    Client: Docker Engine - Community
+     Version:    29.6.1
+     Context:    default
+     Debug Mode: false
+     Plugins:
+      buildx: Docker Buildx (Docker Inc.)
+        Version:  v0.35.0
+        Path:     /usr/libexec/docker/cli-plugins/docker-buildx
+      compose: Docker Compose (Docker Inc.)
+        Version:  v5.2.0
+        Path:     /usr/libexec/docker/cli-plugins/docker-compose
+    
+    ...
+    ```
+
+- Show the version of Docker Compose
+
+    ```shell
+    $ docker compose version
+    Docker Compose version v5.2.0
+    ```
+
+## Commands
+
+### Containers
+
+- Show only running containers (`ls`)
+  ```shell
+  $ docker container ls
+  CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+  ```
+
+- Show all containers (`ls`, `-a`, `--all`)
+  ```shell
+  $ docker container ls -a
+  ```
+
+- Show all containers (`ls`, `-a`, `--all`), only their IDs (`-q`, `--quiet`)  
+  ```shell
+  $ docker container ls -aq
+  ```
+
+- Remove containers (`rm`), force-removing running containers (`-f`, `--force`)
+  ```shell
+  $ docker container rm -f $(docker container ls -aq)
+  ```
+
+### Images
+
+- Show all images (`ls`)
+  ```shell
+  $ docker image ls
+  IMAGE   ID             DISK USAGE   CONTENT SIZE   EXTR
+  ```
+
+- Show images (`ls`), filtered (`-f`, `--filter`) by reference (`reference='diamol/*'`), only their IDs (`-q`, `--quiet`)  
+  ```shell
+  $ docker image ls -f reference='diamol/*' -q
+  ```
+
+- Find the images matching `diamol/*` and remove them (`-rm`), forcing removal when necessary (`-f`, `--force`)
+  ```shell
+  $  docker image rm -f $(docker image ls -f reference='diamol/*' -q)
+  ```
