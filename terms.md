@@ -28,13 +28,9 @@ and the command used to run the application.
 
 ```
 Registry
-  |
-  | (optionally: docker pull)
-  ↓
+  ↓ (optionally: docker pull)
 Image
-  |
-  | docker run
-  ↓
+  ↓ docker run
 Container
 ```
 
@@ -42,12 +38,8 @@ Container
 
 ```
 Dockerfile
-  |
-  | docker build
-  ↓
+  ↓ docker build
 Image
-  |
-  | docker push
-  ↓
+  ↓ docker push
 Registry
 ```
