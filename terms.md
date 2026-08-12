@@ -42,9 +42,9 @@ and the command used to run the application.
 
 ```
 Registry
-  ↓ (optionally: docker pull)
+  ↓ (optionally: docker pull <repository>:<tag>)
 Image
-  ↓ docker run
+  ↓ docker run <repository>:<tag>
 Container
 ```
 
@@ -57,11 +57,15 @@ and then creates and starts a container from it.
 
 ```
 Dockerfile
-  ↓ docker build
+  ↓ docker build -t <repository>:<tag> .
 Image
-  ↓ docker push
+  ↓ docker push <repository>:<tag>
 Registry
 ```
+
+Here `-t`, `--tag` assigns a name and optionally a tag of the image.
+The final `.` is the *build context*.
+It tells Docker to use the current directory as the set of files available during the image build.
 
 ### Monoliths, Containers, and Microservices: From Monolith to Distributed System
 
