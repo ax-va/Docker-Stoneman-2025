@@ -1,6 +1,6 @@
 # Terms
 
-## Core Concepts: Container, Image, Registry, Dockerfile
+## Core Concepts: Container, Image, Registry, Dockerfile, etc.
 
 ### Container
 
@@ -21,6 +21,17 @@ A Docker image is composed of layers.
 A *container registry* is a service for storing and distributing container images.
 Images can be pushed to a registry and pulled from it to run containers on different machines.
 
+### Docker Hub, Repository, Tag
+
+A container registry is a service for storing and distributing container images.
+Docker Hub is Docker's default public container registry.
+
+A *repository* is a collection of related container images.
+A *tag* is a human-readable label used to identify a particular image within a repository.
+
+For example, `diamol/ch02-hello-diamol:2e` is an image reference 
+that points to an image hosted on Docker Hub, 
+where `diamol/ch02-hello-diamol` is a repository and `2e` is a tag.
 
 ### Dockerfile
 
@@ -36,6 +47,11 @@ Image
   ↓ docker run
 Container
 ```
+
+Docker images are stored locally in *Docker's local image store*.
+When `docker run` is executed, Docker first looks for the image locally.
+If the image is not found, Docker automatically pulls it from the registry
+and then creates and starts a container from it.
 
 #### Building and publishing an Image: From Dockerfile to Registry
 
