@@ -176,7 +176,7 @@ If that process is a shell, you get an interactive shell session.
 / # 
 ```
 
-Close the terminal session in the first terminal
+Close the terminal session
 ```console
 / # exit
 ```
