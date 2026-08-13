@@ -42,7 +42,7 @@
   - `-i`, `--interactive` keeps the container's standard input (`stdin`) open;
   - `-t`, `--tty` allocates a pseudo-terminal (TTY).
 
-- Run in another terminal
+- Run in the second terminal
 
     ```console
     $ docker container ls 
@@ -90,7 +90,7 @@
     ...
     ```
 
-- Close the terminal session
+- Close the terminal session in the first terminal
     ```console
     $ / # exit
     ```
