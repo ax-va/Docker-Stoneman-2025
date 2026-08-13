@@ -64,7 +64,13 @@ and then creates and starts a container from it.
 
 A container runs as long as its main application process is running.
 When that process exits, the container stops.
-The stopped container still exists and can be shown with `docker container ls -a`.
+The stopped container still exists and can be shown with `docker container ls -a` (`-a`, `--all`).
+
+`docker run` creates and starts a new container from an image
+and, by default, attaches its standard output and error to the terminal,
+whereas `docker container start` starts an existing stopped container
+without attaching to its output by default.
+You can attach the container's `stdout`/`stderr` to the terminal with `docker container start -a` (`-a`, `--attach`).
 
 ```
 Container starts

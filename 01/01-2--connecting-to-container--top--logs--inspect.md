@@ -16,9 +16,6 @@
           IP: 172.17.0.2
   ```
 
-  A container has a full 64-character ID, but Docker usually displays a shorted form.
-  By default, Docker also uses the shorted container ID as the container's hostname.
-
 - We can start a container in *interactive mode* and enter its isolated environment to execute commands inside it.
 
   ```console

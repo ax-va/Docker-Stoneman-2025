@@ -63,3 +63,40 @@
   52be98857905   diamol/ch02-hello-diamol:2e   "/bin/sh -c ./cmd.sh"   5 minutes ago   Exited (0) 5 minutes ago             magical_leavitt
   d8d35c96daca   diamol/ch02-hello-diamol:2e   "/bin/sh -c ./cmd.sh"   22 hours ago    Exited (0) 22 hours ago              jolly_fermi
   ```
+
+  A container has a full 64-character ID, but Docker usually displays a shorted form.
+  By default, Docker also uses the shorted container ID as the container's hostname.
+
+
+- Start an exited container.
+
+  `docker run` creates and starts a new container from an image
+  and, by default, attaches its standard output and error to the terminal,
+  whereas `docker container start` starts an existing stopped container
+  without attaching to its output by default.
+
+  You can use just the first few characters of the container ID, 
+  as long as they uniquely identify the container.
+
+  ```console
+  $ docker container start 52be
+  52be
+  ```
+  
+  You can attach the container's `stdout`/`stderr` to the terminal with `docker container start -a` (`-a`, `--attach`).
+
+  ```console
+  $ docker container start -a 52be
+  ---------------------
+  Hello from Chapter 2!
+  ---------------------
+  My name is:
+  52be98857905
+  ---------------------
+  Im running on:
+  Linux 6.8.0-124-generic x86_64
+  ---------------------
+  My address is:
+  inet addr:172.17.0.2 Bcast:172.17.255.255 Mask:255.255.0.0
+  ---------------------
+  ```
