@@ -45,6 +45,8 @@ where `diamol/ch02-hello-diamol` is a repository and `2e` is a tag.
 A *Dockerfile* defines the base image, application files, dependencies, configuration,
 and the command used to run the application.
 
+### Building, Pushing, Pulling, Running Containers
+
 #### Running a Container from an Image: From Registry to Running Container 
 
 ```
