@@ -7,6 +7,10 @@
 A *container* is an isolated environment for running an application together with the dependencies it needs.
 It is created from a container image.
 
+The container provides the application with its own hostname, filesystem, 
+and usually network configuration (including an IP address), while sharing the host OS kernel 
+(e.g., the Linux kernel of your Ubuntu machine).
+
 ### Image
 
 A *container image* is a read-only package that contains an application, its dependencies,
@@ -147,3 +151,32 @@ managing Docker objects such as images, containers, networks, and volumes.
 
 The Docker daemon (`dockerd`) is the main background process of Docker Engine.
 It listens for Docker API requests and manages Docker resources.
+
+### Interactive Container
+
+We can start a container in *interactive mode* and enter its isolated environment to execute commands inside it.
+
+```console
+$ docker run -it diamol/ch02-hello-diamol:2e
+```
+
+Here 
+- `-i`, `--interactive` keeps the container's standard input (`stdin`) open;
+- `-t`, `--tty` allocates a pseudo-terminal (TTY).
+
+After container starts, the terminal is connected to a shell running inside the container.
+Commands entered there are executed in the container's environment,
+with its filesystem, hostname, network configuration, etc.
+
+`-it` does not automatically start a shell.
+It connects your terminal to the process started by the container.
+If that process is a shell, you get an interactive shell session.
+
+```console
+/ # 
+```
+
+Close the terminal session in the first terminal
+```console
+$ / # exit
+```
