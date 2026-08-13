@@ -18,14 +18,14 @@ On Linux, you need only Docker CLI (client), Docker Engine (server), and Docker 
 
 - Show the Docker CLI version
 
-    ```shell
+    ```console
     $ docker --version
     Docker version 29.6.1, build 8900f1d
     ```
 
 - Show detailed version information about both the Docker client and server
 
-    ```shell
+    ```console
     $ docker version
     Client: Docker Engine - Community
      Version:           29.6.1
@@ -58,7 +58,7 @@ On Linux, you need only Docker CLI (client), Docker Engine (server), and Docker 
 
 - Show the current Docker environment
 
-    ```shell
+    ```console
     $ docker info
     Client: Docker Engine - Community
      Version:    29.6.1
@@ -77,7 +77,7 @@ On Linux, you need only Docker CLI (client), Docker Engine (server), and Docker 
 
 - Show the version of Docker Compose
 
-    ```shell
+    ```console
     $ docker compose version
     Docker Compose version v5.2.0
     ```
@@ -87,40 +87,40 @@ On Linux, you need only Docker CLI (client), Docker Engine (server), and Docker 
 ### Containers
 
 - Show only running containers (`ls`)
-  ```shell
+  ```console
   $ docker container ls
   CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
   ```
 
 - Show all containers (`ls`, `-a`, `--all`)
-  ```shell
+  ```console
   $ docker container ls -a
   ```
 
 - Show all containers (`ls`, `-a`, `--all`), only their IDs (`-q`, `--quiet`)  
-  ```shell
+  ```console
   $ docker container ls -aq
   ```
 
 - Remove containers (`rm`), force-removing running containers (`-f`, `--force`)
-  ```shell
+  ```console
   $ docker container rm -f $(docker container ls -aq)
   ```
 
 ### Images
 
 - Show all images (`ls`)
-  ```shell
+  ```console
   $ docker image ls
   IMAGE   ID             DISK USAGE   CONTENT SIZE   EXTR
   ```
 
 - Show images (`ls`), filtered (`-f`, `--filter`) by reference (`reference='diamol/*'`), only their IDs (`-q`, `--quiet`)  
-  ```shell
+  ```console
   $ docker image ls -f reference='diamol/*' -q
   ```
 
 - Find the images matching `diamol/*` and remove them (`-rm`), forcing removal when necessary (`-f`, `--force`)
-  ```shell
+  ```console
   $  docker image rm -f $(docker image ls -f reference='diamol/*' -q)
   ```

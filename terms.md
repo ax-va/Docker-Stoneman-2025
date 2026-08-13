@@ -16,6 +16,9 @@ Images are used to create containers.
 An image is not a single file.
 A Docker image is composed of layers.
 
+Docker images are portable across machines with a compatible OS/CPU platform
+and a compatible container runtime.
+
 ### Registry
 
 A *container registry* is a service for storing and distributing container images.
@@ -52,6 +55,20 @@ Docker images are stored locally in *Docker's local image store*.
 When `docker run` is executed, Docker first looks for the image locally.
 If the image is not found, Docker automatically pulls it from the registry
 and then creates and starts a container from it.
+
+A container runs as long as its main application process is running.
+When that process exits, the container stops.
+The stopped container still exists and can be shown with `docker container ls -a`.
+
+```
+Container starts
+  ↓
+Application process runs
+  ↓
+Application process exits
+  ↓
+Container stops
+```
 
 #### Building and publishing an Image: From Dockerfile to Registry
 
