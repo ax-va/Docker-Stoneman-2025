@@ -23,6 +23,37 @@ A Docker image is composed of layers.
 Docker images are portable across machines with a compatible OS/CPU platform
 and a compatible container runtime.
 
+### Image Layer
+
+A Docker image consists of multiple *image layers* stacked together to form the image filesystem.
+
+For example, conceptually:
+
+```console
+Layer 1: base Ubuntu 22.04.5 LTS filesystem (/bin, /etc, /lib, /usr, /var, ...) with system libraries
+Layer 2: Python runtime (CPython 3.12 for Linux/amd64)
+Layer 3: application dependencies (FastAPI 0.138.0, Uvicorn 0.51.0, SQLAlchemy 2.0.51, ...)
+Layer 4: application code
+```
+
+A single logical layer shown in this example may actually consist of multiple Docker image layers.
+Together, these layers form a single Docker image.
+
+Layers can be shared and reused between different images.
+
+When a container is created from an image,
+Docker adds a writable container layer on top of the read-only image layers.
+
+For example:
+
+```console
+Container writable layer
+Layer 4: application code
+Layer 3: application dependencies
+Layer 2: Python runtime
+Layer 1: base Linux filesystem
+```
+
 ### Registry
 
 A *container registry* is a service for storing and distributing container images.
@@ -64,10 +95,11 @@ It tells Docker to use the current directory as the set of files available durin
 #### Running a Container from an Image: From Registry to Running Container 
 
 ```
-Registry
+Registry (by default, Docker Hub)
   ↓ (optionally: docker pull <repository>:<tag>)
-Image
+Image (read-only image layers stored locally in Docker Image Cache)
   ↓ docker run <repository>:<tag>
+  ↓ + writable conatiner layer
 Container
 ```
 
