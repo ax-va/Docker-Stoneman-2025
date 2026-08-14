@@ -40,8 +40,8 @@
   The image itself is not modified. The new value belongs to the container configuration.
 
 
-- `WORKDIR <curent-working-directory>` sets the working directory for the following Dockerfile instructions
-  and for the application at runtime.
+- `WORKDIR <current-working-directory>` sets the current working directory 
+  for the following Dockerfile instructions and for the application at runtime.
 
 
 - `COPY <source-path> <target-path>` copies a file from the Docker build context into the image.
