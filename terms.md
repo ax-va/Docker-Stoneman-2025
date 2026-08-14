@@ -30,7 +30,7 @@ A Docker image consists of multiple *image layers* stacked together to form the 
 For example, conceptually:
 
 ```console
-Layer 1: base Ubuntu 22.04.5 LTS filesystem (/bin, /etc, /lib, /usr, /var, ...) with system libraries
+Layer 1: base Debian filesystem (/bin, /etc, /lib, /usr, /var, ...) with system libraries
 Layer 2: Python runtime (CPython 3.12 for Linux/amd64)
 Layer 3: application dependencies (FastAPI 0.138.0, Uvicorn 0.51.0, SQLAlchemy 2.0.51, ...)
 Layer 4: application code
