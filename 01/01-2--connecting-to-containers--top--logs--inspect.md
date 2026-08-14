@@ -3,6 +3,7 @@
 - The container provides the application with its own hostname, filesystem, 
   and usually network configuration (including an IP address), while sharing the host OS kernel 
   (e.g., the Linux kernel of your Ubuntu machine).
+  
   ```
   Host
   hostname: <your-hostname>
@@ -15,6 +16,8 @@
           hostname: d8d35c96daca
           IP: 172.17.0.2
   ```
+  
+  Files in a container's filesystem can be modified or replaced while the container is running. 
 
 - We can start a container in *interactive mode* and enter its isolated environment to execute commands inside it.
 
