@@ -25,12 +25,12 @@ and a compatible container runtime.
 
 ### Image Layer
 
-A Docker image consists of multiple *image layers* stacked together to form the image filesystem.
+A Docker image consists of multiple read-only *image layers* stacked together.
 
 For example, conceptually:
 
 ```console
-Layer 1: base Debian filesystem (/bin, /etc, /lib, /usr, /var, ...) with system libraries
+Layer 1: base Debian user space (filesystem, system libraries and utilities)
 Layer 2: Python runtime (CPython 3.12 for Linux/amd64)
 Layer 3: application dependencies (FastAPI 0.138.0, Uvicorn 0.51.0, SQLAlchemy 2.0.51, ...)
 Layer 4: application code
@@ -38,6 +38,11 @@ Layer 4: application code
 
 A single logical layer shown in this example may actually consist of multiple Docker image layers.
 Together, these layers form a single Docker image.
+
+Also, Docker image contains the distribution's user space, not its own Linux kernel.
+Linux containers share the kernel provides by the host environment.
+The container's Linux distribution does not have to be the same as the host's distribution.
+For example, a Debian user space can run on the Linux kernel provided by an Ubuntu host.
 
 Layers can be shared and reused between different images.
 
@@ -51,7 +56,7 @@ Container writable layer
 Layer 4: application code
 Layer 3: application dependencies
 Layer 2: Python runtime
-Layer 1: base Linux filesystem
+Layer 1: base Linux user space
 ```
 
 ### Registry
