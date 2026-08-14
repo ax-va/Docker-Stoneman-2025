@@ -19,6 +19,7 @@
   
   Files in a container's filesystem can be modified or replaced while the container is running. 
 
+
 - We can start a container in *interactive mode* and enter its isolated environment to execute commands inside it.
 
   ```console
