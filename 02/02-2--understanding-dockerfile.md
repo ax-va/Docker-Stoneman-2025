@@ -1,4 +1,4 @@
-# Writing Dockerfile
+# Understanding a Dockerfile
 
 - `Dockerfile` (no file extension)
     ```dockerfile
