@@ -45,7 +45,21 @@ where `diamol/ch02-hello-diamol` is a repository and `2e` is a tag.
 A *Dockerfile* defines the base image, application files, dependencies, configuration,
 and the command used to run the application.
 
-### Building, Pushing, Pulling, Running Containers
+### Build, Share, Run Workflow
+
+#### Building and publishing an Image: From Dockerfile to Registry
+
+```
+Dockerfile
+  ↓ docker build -t <repository>:<tag> .
+Image
+  ↓ docker push <repository>:<tag>
+Registry
+```
+
+Here `-t`, `--tag` assigns a name and optionally a tag of the image.
+The final `.` is the *build context*.
+It tells Docker to use the current directory as the set of files available during the image build.
 
 #### Running a Container from an Image: From Registry to Running Container 
 
@@ -57,7 +71,8 @@ Image
 Container
 ```
 
-Docker images are stored locally in *Docker's local image store*.
+Docker images are stored locally in *Docker Image Cache*.
+Already downloaded images can be reused to create multiple containers without downloading the image again.
 When `docker run` is executed, Docker first looks for the image locally.
 If the image is not found, Docker automatically pulls it from the registry
 and then creates and starts a container from it.
@@ -81,20 +96,6 @@ Application process exits
   ↓
 Container stops
 ```
-
-#### Building and publishing an Image: From Dockerfile to Registry
-
-```
-Dockerfile
-  ↓ docker build -t <repository>:<tag> .
-Image
-  ↓ docker push <repository>:<tag>
-Registry
-```
-
-Here `-t`, `--tag` assigns a name and optionally a tag of the image.
-The final `.` is the *build context*.
-It tells Docker to use the current directory as the set of files available during the image build.
 
 ### Monoliths, Containers, and Microservices: From Monolith to Distributed System
 
@@ -148,17 +149,21 @@ Serverless platforms may use containers or other isolation technologies internal
 and some allow developers to deploy container images.
 But serverless itself is not a container technology.
 
-### Docker CLI and Docker Engine
+### Docker Engine, Docker Daemon, and Docker CLI
 
-The *Docker CLI* is a client that communicates with the *Docker Engine* through the *Docker API*.
+*Docker Engine* provides the core Docker functionality for managing resources, 
+such as images, containers, networks, and volumes.
 
-The Docker Engine is the server-side container platform responsible for 
-managing Docker objects such as images, containers, networks, and volumes.
+The *Docker CLI* does not manage these resources directly.
+It communicates with Docker Engine through the *Docker API*,
+which is a standard HTTP-based REST API.
 
-### Docker Daemon
+The Docker daemon (`dockerd`) is the main background process of Docker Engine
+It runs as a system service, listens for Docker API requests, and manages Docker resources.
 
-The Docker daemon (`dockerd`) is the main background process of Docker Engine.
-It listens for Docker API requests and manages Docker resources.
+```
+Docker CLI → Docker API → Docker daemon (dockerd) → Docker resources
+```
 
 ### Interactive Container
 
