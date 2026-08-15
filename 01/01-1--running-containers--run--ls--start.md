@@ -68,7 +68,7 @@
   By default, Docker also uses the shorted container ID as the container's hostname.
 
 
-- Start an exited container.
+- Start an exited (stopped) container.
 
   `docker run` creates and starts a new container from an image
   and, by default, attaches its standard output and error to the terminal,

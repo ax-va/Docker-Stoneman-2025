@@ -16,7 +16,7 @@
     docker.io/diamol/ch03-web-ping:2e
     ```
 
-- Run the container in background (`-d`, `--detach`), give the container a friendly name (`--name`).
+- Run a container in background (`-d`, `--detach`), give the container a friendly name (`--name`).
   The application pings by default `blog.sixeyed.com.
   ```console
   $ docker container run -d --name web-ping diamol/ch03-web-ping:2e
@@ -35,7 +35,7 @@
   Got response status: 200 at 1786724843498; duration: 146ms
   ```
 
-- Force-remove the container and run it again with the `TARGET` environment variable (`--env`).
+- Force-remove the container and run another container again with the `TARGET` environment variable (`--env`).
   Now the application pings `google.com`.
   ```console
   $ docker rm -f web-ping
