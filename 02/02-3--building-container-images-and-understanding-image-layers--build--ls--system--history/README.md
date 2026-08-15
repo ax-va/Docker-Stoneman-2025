@@ -1,4 +1,4 @@
-# Building Container Images
+# Building Container Images and Understanding Image Layers
 
 - Build the image
 ```console
@@ -35,7 +35,41 @@ $ docker image build --tag web-ping .
     diamol/ch03-web-ping:2e           a7e429b1053c        156MB             0B    U   
     web-ping:latest                   52686672da09        156MB             0B  
     ```
-  List images whose repository name starts with 'w'
+  
+  The `SIZE` column is the *logical size* of the image - the total size of its filesystem content.
+  Because images layers can be shared between images, 
+  the additional physical disk space used by this image may be smaller.
+
+- Show images disk usage
+
+  ```console
+  $ docker system df
+  TYPE            TOTAL     ACTIVE    SIZE      RECLAIMABLE
+  Images          5         3         232.5MB   12.74MB (5%)
+  Containers      3         0         25B       25B (100%)
+  Local Volumes   9         0         789.4MB   789.4MB (100%)
+  Build Cache     9         0         1.828kB   982B
+  ```
+  
+  ```console
+  $ docker system df -v
+  Images space usage:
+  
+  REPOSITORY                     TAG       IMAGE ID       CREATED             SIZE      SHARED SIZE   UNIQUE SIZE   CONTAINERS
+  web-ping                       latest    52686672da09   About an hour ago   156MB     156MB         846B          1
+  diamol/ch02-hello-diamol-web   2e        bfce3f6fc117   17 months ago       63.8MB    7.834MB       55.96MB       1
+  diamol/ch03-web-ping           2e        a7e429b1053c   17 months ago       156MB     156MB         846B          1
+  diamol/base                    2e        2b8ea8bae293   17 months ago       12.8MB    7.834MB       4.94MB        0
+  diamol/ch02-hello-diamol       2e        913b56a07a3a   17 months ago       7.8MB     0B            7.805MB       0
+
+  ...
+  ```
+  - `SHARED SIZE` is the size of image data also used by other images.
+  - `UNIQUE SIZE` is the size of image data used only by this image.
+  -  Docker stores shared layers only once, which reduces actual disk usage.
+
+
+- List images whose repository name starts with 'w'
   ```console
   $ docker image ls 'w*'
                                                                                                                  i Info →   U  In Use
