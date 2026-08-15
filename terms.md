@@ -102,22 +102,31 @@ Here `-t`, `--tag` assigns a name and optionally a tag of the image.
 The final `.` is the *build context*.
 It tells Docker to use the current directory as the set of files available during the image build.
 
+Docker can reuse previously available image layers and cached build results when building an image,
+so unchanged parts of the image do not need to be rebuilt.
+
+The same read-only filesystem layers can also be shared between multiple images,
+so identical layer content does not need to be stored multiple times.
+
 #### Running a Container from an Image: From Registry to Running Container 
 
 ```
 Registry (by default, Docker Hub)
   ↓ (optionally: docker pull <repository>:<tag>)
-Image (read-only image layers stored locally in Docker Image Cache)
+Image (stored locally; filesystem content is organized into read-only layers)
   ↓ docker run <repository>:<tag>
   ↓ + writable conatiner layer
 Container
 ```
 
-Docker images are stored locally in *Docker Image Cache*.
+Docker images are stored locally.
+
 Already downloaded images can be reused to create multiple containers without downloading the image again.
 When `docker run` is executed, Docker first looks for the image locally.
-If the image is not found, Docker automatically pulls it from the registry
+If the image is not found locally, Docker automatically pulls it from the registry
 and then creates and starts a container from it.
+
+When a container is created, Docker adds a writable container layer on top of the image's read-only filesystem layers.
 
 A container runs as long as its main application process is running.
 When that process exits, the container stops.

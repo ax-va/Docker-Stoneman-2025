@@ -24,7 +24,7 @@
      => => naming to docker.io/library/web-ping                                                                                       0.0s
     ```
 
-- Check the image in the local Docker Image Cache:
+- Check whether the image is available locally:
     ```console
     $ docker image ls
                                                                                                                   i Info →   U  In Use
