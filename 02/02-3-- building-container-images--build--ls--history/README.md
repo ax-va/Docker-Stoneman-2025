@@ -43,10 +43,40 @@ $ docker image build --tag web-ping .
   web-ping:latest   52686672da09        156MB             0B 
   ```
 
-- Run a container from the created and stored locally image
+- Run a container from the built image
   ```console
   $ docker container run -e TARGET=docker.com -e INTERVAL=5000 web-ping
   ** web-ping ** Pinging: docker.com; method: HEAD; 5000ms intervals
   Making request number: 1; at 1786792678887
   Got response status: 301 at 1786792679065; duration: 178ms
   ```
+  Stop with `CTRL+C`.
+
+
+- Show the history of instructions that contributed to the image
+  ```console
+  $ docker image history web-ping
+  IMAGE          CREATED          CREATED BY                                      SIZE      COMMENT
+  52686672da09   27 minutes ago   CMD ["node" "/app/app.js"]                      0B        buildkit.dockerfile.v0
+  <missing>      27 minutes ago   COPY app . # buildkit                           846B      buildkit.dockerfile.v0
+  <missing>      27 minutes ago   WORKDIR /app                                    0B        buildkit.dockerfile.v0
+  <missing>      27 minutes ago   ENV INTERVAL=3000                               0B        buildkit.dockerfile.v0
+  <missing>      27 minutes ago   ENV METHOD=HEAD                                 0B        buildkit.dockerfile.v0
+  <missing>      27 minutes ago   ENV TARGET=blog.sixeyed.com                     0B        buildkit.dockerfile.v0
+  <missing>      2 years ago      CMD ["node"]                                    0B        buildkit.dockerfile.v0
+  <missing>      2 years ago      ENTRYPOINT ["docker-entrypoint.sh"]             0B        buildkit.dockerfile.v0
+  <missing>      2 years ago      COPY docker-entrypoint.sh /usr/local/bin/ # …   388B      buildkit.dockerfile.v0
+  <missing>      2 years ago      RUN /bin/sh -c apk add --no-cache --virtual …   5.59MB    buildkit.dockerfile.v0
+  <missing>      2 years ago      ENV YARN_VERSION=1.22.22                        0B        buildkit.dockerfile.v0
+  <missing>      2 years ago      RUN /bin/sh -c addgroup -g 1000 node     && …   143MB     buildkit.dockerfile.v0
+  <missing>      2 years ago      ENV NODE_VERSION=22.6.0                         0B        buildkit.dockerfile.v0
+  <missing>      2 years ago      /bin/sh -c #(nop)  CMD ["/bin/sh"]              0B        
+  <missing>      2 years ago      /bin/sh -c #(nop) ADD file:99093095d62d04215…   7.8MB  
+  ```
+  A history entry does not necessarily correspond to a filesystem layer:
+
+  - Instructions that modify the filesystem, such as `COPY`, `ADD`, and usually `RUN`
+    produce filesystem changes stored in image layers.
+
+  - Instructions such as `ENV`, `CMD`, `ENTRYPOINT`, and `WORKDIR` can modify the image configuration/metadata 
+    without adding filesystem content.

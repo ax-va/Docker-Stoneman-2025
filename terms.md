@@ -44,7 +44,12 @@ Linux containers share the kernel provides by the host environment.
 The container's Linux distribution does not have to be the same as the host's distribution.
 For example, a Debian user space can run on the Linux kernel provided by an Ubuntu host.
 
-Layers can be shared and reused between different images.
+#### Layers Can Be Shared and Reused Between Different Images
+
+Docker image layers allow filesystem content to be cached, shared, and reused between builds and images,
+making image building, storage, and distribution more efficient. 
+
+### Container Writable Layer
 
 When a container is created from an image,
 Docker adds a writable container layer on top of the read-only image layers.
