@@ -64,6 +64,7 @@
 
   ...
   ```
+  - `docker system df -v` shows images and their disk usage, not the individual image layers.
   - `SHARED SIZE` is the size of image data also used by other images.
   - `UNIQUE SIZE` is the size of image data used only by this image.
   -  Docker stores shared layers only once, which reduces actual disk usage.
