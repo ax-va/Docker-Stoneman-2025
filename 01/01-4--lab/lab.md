@@ -1,4 +1,10 @@
-1. 
+# Lab 1
+
+Task:
+Run the website from a container and replace its `index.html` with your `index.html`
+so that the website displays a different home page.
+
+1.
     ```console
     $ docker container --help
     Usage:  docker container COMMAND
