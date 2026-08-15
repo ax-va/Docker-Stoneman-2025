@@ -6,7 +6,7 @@
 - Therefore, Dockerfile instructions should generally be ordered 
   so that less frequently chnaging inputs come before more frequently changing ones.
 
-- A common example is a Python application
+- A common example is a Python application:
 
     ```
     project/
@@ -29,6 +29,10 @@
     
     CMD ["uvicorn", "main:app", "--host", "0.0.0.0"]
     ```
-  If the application code changes, but `requirements.txt` does not,
-  Docker can reuse the cached result of the dependency installation 
-  and only execute the build steps affected by the changed application code.
+  - If the application code changes, but `requirements.txt` does not,
+    Docker can reuse the cached result of the dependency installation 
+    and only execute the build steps affected by the changed application code.
+
+  - Keeping `CMD` at the end also makes the Dockerfile easier to read:
+    first prepare the runtime environment and application files, 
+    then define how the application should be started.
