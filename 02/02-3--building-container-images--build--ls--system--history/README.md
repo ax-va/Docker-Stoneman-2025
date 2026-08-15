@@ -1,4 +1,4 @@
-# Building Container Images and Understanding Image Layers
+# Building Container Images
 
   - Build the image
     ```console
