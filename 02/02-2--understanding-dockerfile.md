@@ -46,12 +46,16 @@
 
 - `COPY <source-path> <target-path>` copies files or directories from the Docker build context into the image.
 
-  - Note: `COPY . .` is convenient when the build context already contains the application files
-  that should be copied into the image. Files that should not be copied can be excluded using `.dockerignore`.
+  - Note: `COPY app .` copies the content of the `app` directory from the Docker build context
+    into the current working directory in the image. 
+    The source path (`app`) is relative to the Docker build context.
+    The target path (`.`) refers to the current `WORKDIR`.
+  
+  - Files that should not be copied can be excluded using `.dockerignore`.
   
   - It is also common to copy dependency files separately before copying the application code.
-  This allows Docker to reuse the layer containing installed dependencies 
-  when the application code changes but requirements do not. 
+    This allows Docker to reuse the layer containing installed dependencies 
+    when the application code changes but requirements do not. 
 
 
 - `CMD <JSON-array>` defines the default executable and arguments that Docker runs 
