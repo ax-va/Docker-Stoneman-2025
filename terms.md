@@ -244,3 +244,36 @@ Close the terminal session
 ```console
 / # exit
 ```
+
+# Multi-Stage Builds
+
+- A *multi-stage build* allows different environments to be used during the image build
+  while keeping only what is needed in the final image.
+
+- Each `FROM <image>` starts a new build stage. A stage can optionally be named with `AS <stage>`.
+
+- Files and build artifacts can be copied from one stage to another using 
+  `COPY --from=<stage> <source-path> <target-path>`.
+
+- Individual stages are isolated.
+  The output in the final stage will only contain what you explicitly copy from earlier stages.
+
+- This is useful when building an application requires tools
+  that are not needed at runtime, such as compilers, build tools, source files, or development dependencies.
+
+- As a result, the final image can contain only the application and its runtime dependencies,
+  making it smaller and avoiding unnecessary build tools in the runtime image.
+
+- Example of a multi-stage Dockerfile:
+    ```dockerfile
+    FROM diamol/base:2e AS build-stage
+    RUN echo 'Building...' > /build.txt
+    
+    FROM diamol/base:2e AS test-stage
+    COPY --from=build-stage /build.txt /build.txt
+    RUN echo 'Testing...' >> /build.txt
+    
+    FROM diamol/base:2e
+    COPY --from=test-stage /build.txt /build.txt
+    CMD ["cat", "/build.txt"]
+    ```
