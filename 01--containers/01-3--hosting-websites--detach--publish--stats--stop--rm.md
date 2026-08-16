@@ -1,4 +1,4 @@
-# Detached Mode
+# Hosting Websites and Detached Mode
 
 - Run a container in the background without attaching its `stdout` and `stderr` (`-d`, `--detach`).
   Publish a container port by mapping a port on the host (your machine) 

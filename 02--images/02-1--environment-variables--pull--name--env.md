@@ -1,4 +1,4 @@
-# Setting a Container Configuration Difficult from Its Image Configuration - an Environment Variable 
+# Environment Variables
 
 - Pull the `diamol/ch03-web-ping:2e` image form Docker Hub https://hub.docker.com/r/diamol/ch03-web-ping
 
@@ -35,7 +35,7 @@
   Got response status: 200 at 1786724843498; duration: 146ms
   ```
 
-- Force-remove the container and run another container again with the `TARGET` environment variable (`--env`).
+- Force-remove the container and run a container again with the `TARGET` environment variable (`--env`).
   Now the application pings `google.com`.
   ```console
   $ docker rm -f web-ping

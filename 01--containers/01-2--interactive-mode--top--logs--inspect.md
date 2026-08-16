@@ -1,4 +1,4 @@
-# Connecting to Containers
+# Interactive Mode
 
 - The container provides the application with its own hostname, filesystem, 
   and usually network configuration (including an IP address), while sharing the host OS kernel 
