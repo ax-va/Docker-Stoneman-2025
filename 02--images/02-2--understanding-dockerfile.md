@@ -44,7 +44,8 @@
   for the following Dockerfile instructions and for the application at runtime.
 
 
-- `COPY <source-path> <target-path>` copies files or directories from the Docker build context into the image.
+- `COPY <source-path-1> <source-path-2> ... <target-path>` 
+  copies files or the contents of directories from the Docker build context into the image.
 
   - Note: `COPY app .` copies the content of the `app` directory from the Docker build context
     into the current working directory in the image. 
