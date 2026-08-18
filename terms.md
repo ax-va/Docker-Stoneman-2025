@@ -245,7 +245,7 @@ Close the terminal session
 / # exit
 ```
 
-# Multi-Stage Builds
+### Multi-Stage Builds
 
 - A *multi-stage build* allows different environments to be used during the image build
   while keeping only what is needed in the final image.
@@ -277,3 +277,25 @@ Close the terminal session
     COPY --from=test-stage /build.txt /build.txt
     CMD ["cat", "/build.txt"]
     ```
+
+### Docker Networks
+
+- A *Docker network* allows containers to communicate with each other.
+
+- Containers connected to the same user-defined Docker network can reach each other using
+  *container names* instead of IP addresses.
+
+- Docker provides an internal *DNS service* 
+  that resolves a container name to its IP address inside the network.
+
+### Docker Compose
+
+- *Docker Compose* is used to define and manage multi-container applications.
+
+- Instead of manually creating networks and starting each container with separate Docker commands,
+  the application services, networks, volumes, environment variables, ports, and other configuration
+  can be described in a `compose.yaml` file and managed together.
+
+- Docker Compose does not replace Docker networks.
+  By default, Compose creates a network for the application and connects its services to that network,
+  allowing them to communicate using service names.
