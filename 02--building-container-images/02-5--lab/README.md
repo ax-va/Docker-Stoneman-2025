@@ -1,7 +1,7 @@
 # Lab 2
 
 Task:
-Append your name to `/diamol/ch03.txt` 
+Append your name to `/diamol/ch03.txt` in a container built from the `diamol/ch03-lab:2e`
 and create a new Docker image with the updated text file, but without using a Dockerfile.
 
 
