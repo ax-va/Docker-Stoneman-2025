@@ -1,4 +1,6 @@
-# Lab 2
+# Building Container Images
+
+## Lab 2
 
 Task:
 Append your name to `/diamol/ch03.txt` in a container built from the `diamol/ch03-lab:2e`

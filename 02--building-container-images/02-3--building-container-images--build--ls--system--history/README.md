@@ -1,5 +1,7 @@
 # Building Container Images
 
+## Example
+
   - Build the image
     ```console
     $ docker image build --tag web-ping .

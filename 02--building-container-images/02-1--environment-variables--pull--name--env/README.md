@@ -1,4 +1,6 @@
-# Environment Variables
+# Building Container Images
+
+## Environment Variables
 
 - Pull the `diamol/ch03-web-ping:2e` image form Docker Hub https://hub.docker.com/r/diamol/ch03-web-ping
 

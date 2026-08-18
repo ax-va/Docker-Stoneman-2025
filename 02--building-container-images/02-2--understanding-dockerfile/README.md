@@ -1,4 +1,6 @@
-# Understanding a Dockerfile
+# Building Container Images
+
+## Understanding a Dockerfile
 
 - `Dockerfile` (no file extension)
     ```dockerfile

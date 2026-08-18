@@ -1,5 +1,7 @@
 # Running Containers
 
+## Examples
+
 - Pull the `diamol/ch02-hello-diamol:2e` image from Docker Hub and run a container from that image
     ```console
     $ docker run diamol/ch02-hello-diamol:2e

@@ -1,4 +1,6 @@
-# Lab 1
+# Building Container Images
+
+## Lab 1
 
 Task:
 Run the website from a container and replace its `index.html` with your `index.html`

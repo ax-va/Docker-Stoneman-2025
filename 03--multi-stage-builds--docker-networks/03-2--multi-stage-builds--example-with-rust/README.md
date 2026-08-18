@@ -1,4 +1,6 @@
-# Multi-Stage Build: An Example with Rust
+# Multi-Stage Builds
+
+## Multi-Stage Build: An Example with Rust
 
 - Multi-stage build separates the build environment from the runtime environment.
   The build stage can contain compliers, build tools, source code, and other build-time dependencies,

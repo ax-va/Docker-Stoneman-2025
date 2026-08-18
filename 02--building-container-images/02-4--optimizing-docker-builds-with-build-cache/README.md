@@ -1,4 +1,6 @@
-# Optimizing Docker Build with the Build Cache
+# Building Container Images
+
+## Optimizing Docker Build with the Build Cache
 
 - Docker can reuse cached results from previous builds
   when a Dockerfile instruction and its relevant inputs have not changed.

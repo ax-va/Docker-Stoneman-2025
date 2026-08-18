@@ -8,7 +8,7 @@
 - Docker provides an internal *DNS service* 
   that resolves a container name to its IP address inside the network.
 
-### Example: Container-to-Container Communication
+## Example: Container-to-Container Communication
 
 - Create a Docker network
     ```console
@@ -124,7 +124,7 @@
     console
     ```
 
-### Docker Compose
+## Docker Compose
 
 - *Docker Compose* is used to define and manage multi-container applications.
 

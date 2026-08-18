@@ -17,6 +17,8 @@
 - As a result, the final image can contain only the application and its runtime dependencies,
   making it smaller and avoiding unnecessary build tools in the runtime image.
 
+## Example
+
 - Example of a multi-stage Dockerfile:
     ```dockerfile
     FROM diamol/base:2e AS build-stage
