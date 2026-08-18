@@ -1,4 +1,4 @@
-# Multi-Stage Builds
+# Multi-Stage Dockerfile
 
 - A *multi-stage build* allows different environments to be used during the image build
   while keeping only what is needed in the final image.

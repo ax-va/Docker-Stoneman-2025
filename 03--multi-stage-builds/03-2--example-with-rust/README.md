@@ -4,7 +4,7 @@
   The build stage can contain compliers, build tools, source code, and other build-time dependencies,
   while the final stage contains only the artifacts and runtime dependencies needed to run the application.
 
-- Dockerfile
+- Multi-stage Dockerfile
 
     ```Dockerfile
     # build stage
