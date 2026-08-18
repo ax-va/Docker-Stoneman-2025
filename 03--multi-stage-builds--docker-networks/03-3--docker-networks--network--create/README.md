@@ -8,7 +8,7 @@
 - Docker provides an internal *DNS service* 
   that resolves a container name to its IP address inside the network.
 
-### Example: A Python Application Container Communicates with a Fake Database Container
+### Example: Container-to-Container Communication
 
 - Create a Docker network
     ```console
