@@ -245,6 +245,16 @@ Close the terminal session
 / # exit
 ```
 
+### BuildKit
+
+*BuildKit* is Docker's modern build engine.
+It analyzes the dependencies between Dockerfile instructions and build stages,
+allowing independent work to be executed in parallel
+and unnecessary stages to be skipped.
+
+BuildKit also provides more efficient build caching and additional features
+such as cache mounts and secret mounts, which can make builds faster and more secure.
+
 ### Multi-Stage Builds
 
 - A *multi-stage build* allows different environments to be used during the image build
@@ -263,6 +273,11 @@ Close the terminal session
 
 - As a result, the final image can contain only the application and its runtime dependencies,
   making it smaller and avoiding unnecessary build tools in the runtime image.
+
+- A multistage build is a dependency graph rather than a strictly sequential process.
+  BuildKit can execute independent stages in parallel.
+  If one stage depends on another, for example through `COPY --from`,
+  it must wait when it reaches that dependency.
 
 - Example of a multi-stage Dockerfile:
     ```dockerfile

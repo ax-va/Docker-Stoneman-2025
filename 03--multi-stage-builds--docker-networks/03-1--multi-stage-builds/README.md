@@ -17,6 +17,11 @@
 - As a result, the final image can contain only the application and its runtime dependencies,
   making it smaller and avoiding unnecessary build tools in the runtime image.
 
+- A multistage build is a dependency graph rather than a strictly sequential process.
+  BuildKit can execute independent stages in parallel.
+  If one stage depends on another, for example through `COPY --from`,
+  it must wait when it reaches that dependency.
+
 ## Example
 
 - Example of a multi-stage Dockerfile:
