@@ -124,3 +124,23 @@ On Linux, you need only Docker CLI (client), Docker Engine (server), and Docker 
   ```console
   $  docker image rm -f $(docker image ls -f reference='diamol/*' -q)
   ```
+
+### Multiple Filters
+
+  A Docker command can contain multiple `--filter` options.
+  Multiple filters with different keys are generally combined as `AND`,
+  while multiple values for the same keys can act as `OR`:
+
+  - 
+    ```console
+    $ docker container ls \
+      --filter status=running \
+      --filter name=app
+    ```
+
+  - 
+    ```console
+    $ docker image ls \
+      --filter reference=diamol/golang:2e \
+      --filter reference=image-gallery
+    ```
