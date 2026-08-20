@@ -115,27 +115,32 @@ obtained from the data service and processed by backend.
     $ curl http://localhost:8000/books/1 ; echo
     {"id":1,"title":"Learning Docker in one Semester","author":"Ridley Bibber","price":40.0,"price_with_tax":48.0}
     ```
-   
+
+-
     ```console
     $ curl http://localhost:8000/books/2 ; echo
     {"id":2,"title":"Learning Python in one Semester","author":"Taylor Travolta","price":30.0,"price_with_tax":36.0}
     ```
-   
+
+-   
     ```console
     $ curl http://localhost:8000/books/3 ; echo
     {"detail":"Book not found"}
     ```
-   
+
+-   
     ```console
     $ docker container rm -f backend
     backend
     ```
-    
+
+-    
     ```console
     $ docker container rm -f data-service
     data-service
     ```
-    
+
+-    
     ```console
     $ docker network rm lab-net
     lab-net
