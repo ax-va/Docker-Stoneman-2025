@@ -77,9 +77,13 @@ Docker Hub is Docker's default public image registry.
 A *repository* is a collection of related container images.
 A *tag* is a human-readable label used to identify a particular image within a repository.
 
-For example, `diamol/ch02-hello-diamol:2e` is an image reference 
+For example, `diamol/ch02-hello-diamol:2e` is an *image reference* 
 that points to an image hosted on Docker Hub, 
 where `diamol/ch02-hello-diamol` is a repository and `2e` is a tag.
+
+The fully qualified image reference for this image is `docker.io/diamol/ch02-hello-diamol:2e`,
+which explicitly includes the registry domain. 
+For Docker Hub, the registry domain can normally be omitted.
 
 ### Dockerfile
 
