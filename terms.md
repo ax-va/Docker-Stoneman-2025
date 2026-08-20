@@ -79,7 +79,7 @@ Docker Hub is Docker's default public image registry.
 
 - A *tag* is a human-readable label used to identify a particular image within a repository.
   A repository can contain images with multiple tags, typically used to identify different versions or variants.
-  Multiple tags can point to the same image.
+  Multiple tags can point to the same image - `latest` is the default.
 
 For example, `diamol/ch02-hello-diamol:2e` is an *image reference* 
 that points to an image hosted on Docker Hub, 
