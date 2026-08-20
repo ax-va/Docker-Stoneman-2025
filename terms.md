@@ -64,22 +64,26 @@ Layer 2: Python runtime
 Layer 1: base Linux user space
 ```
 
-### Registry
+### Registry, Docker Hub
 
-A *container registry* is a service for storing and distributing container images.
+An *image registry* is a service for storing and distributing container images.
 Images can be pushed to a registry and pulled from it to run containers on different machines.
-
-### Docker Hub, Repository, Tag
-
-An image registry is a service for storing and distributing container images.
 Docker Hub is Docker's default public image registry.
 
-A *repository* is a collection of related container images.
-A *tag* is a human-readable label used to identify a particular image within a repository.
+### Owner Namespace, Repository, Tag
+
+- An *owner namespace* identifies a user or organization that owns a repository
+  and provides a namespace for its repository names.
+
+- A *repository* is a collection of related container images.
+
+- A *tag* is a human-readable label used to identify a particular image within a repository.
+  A repository can contain images with multiple tags, typically used to identify different versions or variants.
+  Multiple tags can point to the same image.
 
 For example, `diamol/ch02-hello-diamol:2e` is an *image reference* 
 that points to an image hosted on Docker Hub, 
-where `diamol/ch02-hello-diamol` is a repository and `2e` is a tag.
+where `diamol` is an owner namespace, `ch02-hello-diamol` is a repository, and `2e` is a tag.
 
 The fully qualified image reference for this image is `docker.io/diamol/ch02-hello-diamol:2e`,
 which explicitly includes the registry domain. 
