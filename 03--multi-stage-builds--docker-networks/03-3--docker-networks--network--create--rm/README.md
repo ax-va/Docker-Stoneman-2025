@@ -16,9 +16,9 @@
     6580bcd8c7f185fa22f8b78b60b02d6745e6d55ec5799736979718dd100b3010
     ```
 
-- Build the fake database image
+- Build the data service image
     ```console
-    $ docker image build -t db-image ./db
+    $ docker image build -t data-service-image ./data-service
     [+] Building 10.9s (8/8) FINISHED                                                                                             docker:default
      => [internal] load build definition from Dockerfile                                                                                    0.0s
      => => transferring dockerfile: 128B                                                                                                    0.0s 
@@ -40,17 +40,17 @@
      => => extracting sha256:6760bfe2ff00c4530bc73b2f88a1e9615a56c9a77028f41f8bb4b978d08b8439                                               0.0s 
      => [internal] load build context                                                                                                       0.0s 
      => => transferring context: 894B                                                                                                       0.0s 
-     => [2/3] WORKDIR /db/src                                                                                                               0.4s 
-     => [3/3] COPY src/fake_db.py .                                                                                                         0.0s 
+     => [2/3] WORKDIR /data-service/src                                                                                                     0.4s 
+     => [3/3] COPY src/main.py .                                                                                                            0.0s 
      => exporting to image                                                                                                                  0.0s 
      => => exporting layers                                                                                                                 0.0s 
      => => writing image sha256:90de7c719ceca8386a932169845cabd62e213c69fc721622f2d363692b749d28                                            0.0s 
-     => => naming to docker.io/library/db-image                                                                                             0.0s
+     => => naming to docker.io/library/data-service-image                                                                                   0.0s
     ```
 
-- Start the database container in the background, connect it to the Docker network
+- Run a data-service container in the background, connect it to the Docker network
     ```console
-    $ docker container run -d --name db --network my-net db-image
+    $ docker container run -d --name data-service --network my-net data-service-image
     67f0d88705b860bc22524cdcd8b73ba35ba701799a2368000b7c7f20ce185fbd
     ```
 
@@ -76,16 +76,16 @@
      => => naming to docker.io/library/app-image                                                                                            0.0s 
     ```
 
-- Run the application container, connect it to the Docker network
+- Run an application container, connect it to the Docker network
     ```console
-    $ docker container run --rm --name python-app --network my-net app-image
+    $ docker container run --rm --name app --network my-net app-image
     fetched data
     ```
 
 - Force-remove the first container
     ```console
-    $ docker container rm -f db
-    db
+    $ docker container rm -f data-service
+    data-service
     ```
 
 - Remove the Docker network
@@ -97,29 +97,29 @@
 
 ### How Containers Communicate Through a Docker Network
     ```
-    python-app container
+    app container
       ↓
-    HTTP request: GET http://db:8000/data
+    HTTP request: GET http://data-service:8000/data
       ↓
     Docker DNS
       ↓  
-    "db" → IP address of the db container in the Docker network
+    "data-service" → IP address of the data-service container in the Docker network
       ↓
-    db container
+    data-service container
       ↓
     port 8000
       ↓
     GET /data
       ↓
-    fake_db.py handels the request
+    `main.py` in the data-service container handels the request
       ↓
     HTTP response: "fetched data"
       ↓ 
-    python-app receives the response
+    app receives the response
       ↓
-    data_layer.py returns "fetched data"
+    `repository.py` in the app container returns "fetched data"
       ↓ 
-    main.py prints "fetched data"
+    `main.py` in the app conatiner prints "fetched data"
       ↓ 
     console
     ```

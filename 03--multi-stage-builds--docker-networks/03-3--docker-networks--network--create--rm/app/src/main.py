@@ -1,6 +1,6 @@
 import asyncio
 
-from data_layer import fetch_data
+from repository import fetch_data
 
 
 async def main() -> None:

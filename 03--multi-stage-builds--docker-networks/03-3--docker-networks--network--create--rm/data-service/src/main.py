@@ -1,10 +1,10 @@
-"""A simple HTTP server that imitates a database service"""
+"""A simple HTTP server that imitates a data service"""
 
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
 
 class Handler(BaseHTTPRequestHandler):
-    """Handels HTTP requests to the fake database."""
+    """Handles HTTP requests to the data service."""
 
     def do_GET(self):
         """Returns fake data for `GET /data`."""
