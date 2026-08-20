@@ -28,12 +28,12 @@ obtained from the data service and processed by backend.
 
 ### Building and Checking Data Service
 
-1. 
+- 
     ```console
     $ docker image build -t data-service-image ./data-service
     ```
 
-2. 
+-
     ```console
     $ docker image ls data-service-image
                                                                                                     i Info →   U  In Use
@@ -41,7 +41,7 @@ obtained from the data service and processed by backend.
     data-service-image:latest   cc4ba231463c        167MB             0B  
     ```
 
-3. 
+-
    ```console
    $ docker container run -d \
      --name data-service \
@@ -50,19 +50,19 @@ obtained from the data service and processed by backend.
    8c158cc8055c1e67b3c9446b42a3aa4595f7c96e1d2d03939fa45db206ffc6c8
    ```
 
-4. 
+-
   ```console
   $ curl http://localhost:8000/books/1 ; echo
   {"id":1,"title":"Learning Docker in one Semester","author":"Ridley Bibber","price":40.0}
   ```
 
-5.
-  ```console
-  $ curl http://localhost:8000/books/3 ; echo
-  {"detail":"Book not found"}
-  ```
+- 
+   ```console
+   $ curl http://localhost:8000/books/3 ; echo
+   {"detail":"Book not found"}
+   ```
 
-6.
+-
   ```console
   $ docker container rm -f data-service
   data-service
@@ -70,12 +70,12 @@ obtained from the data service and processed by backend.
 
 ### Building Backend
 
-1. 
+-
     ```console
     $ docker image build -t backend-image ./backend
     ```
 
-2. 
+-
     ```console
     $ docker image ls backend-image
                                                                                                     i Info →   U  In Use
@@ -85,13 +85,13 @@ obtained from the data service and processed by backend.
 
 ### Running and Checking Containers in a Network
 
-1. 
+-
     ```console
     $ docker network create lab-net
     082afdeccab44d6c6020df0476a12aebc37fa13799d41705c08b8441946a5e7c
     ```
 
-2. 
+-
     ```console
     $ docker container run -d \
       --name data-service \
@@ -100,7 +100,7 @@ obtained from the data service and processed by backend.
     a855a2b95051b94340326545f6be518e566d9d2dc9d63a6a0734344d41c88dde
     ```
 
-3. 
+- 
     ```console
     $ docker container run -d \
       --name backend \
@@ -110,7 +110,7 @@ obtained from the data service and processed by backend.
     0f8bcc7b902d56bf42d9b123fd35f395adbf1550d0d1c79d185c2d03dd028c3e
     ```
 
-4.
+-
     ```console
     $ curl http://localhost:8000/books/1 ; echo
     {"id":1,"title":"Learning Docker in one Semester","author":"Ridley Bibber","price":40.0,"price_with_tax":48.0}
