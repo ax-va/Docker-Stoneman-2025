@@ -66,9 +66,10 @@ Layer 1: base Linux user space
 
 ### Registry, Docker Hub
 
-An *image registry* is a service for storing and distributing container images.
+- An *image registry* is a service for storing and distributing container images.
 Images can be pushed to a registry and pulled from it to run containers on different machines.
-Docker Hub is Docker's default public image registry.
+
+- *Docker Hub* is Docker's default public image registry.
 
 ### Owner Namespace, Repository, Tag
 
