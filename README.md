@@ -8,13 +8,13 @@ https://github.com/sixeyed/diamol/tree/2e
 
 https://hub.docker.com/
 
-## On Windows and macOS
+## Windows and macOS
 
 See the installation of Docker Desktop on Windows and macOS
 
 https://www.docker.com/products/docker-desktop/
 
-## On Linux 
+## Linux 
 
 See the installation of Docker Desktop on Linux
 
