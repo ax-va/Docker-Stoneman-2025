@@ -71,8 +71,8 @@ Images can be pushed to a registry and pulled from it to run containers on diffe
 
 ### Docker Hub, Repository, Tag
 
-A container registry is a service for storing and distributing container images.
-Docker Hub is Docker's default public container registry.
+An image registry is a service for storing and distributing container images.
+Docker Hub is Docker's default public image registry.
 
 A *repository* is a collection of related container images.
 A *tag* is a human-readable label used to identify a particular image within a repository.
