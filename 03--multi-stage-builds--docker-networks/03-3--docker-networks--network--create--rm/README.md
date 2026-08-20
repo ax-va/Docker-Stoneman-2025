@@ -40,7 +40,7 @@
      => => extracting sha256:6760bfe2ff00c4530bc73b2f88a1e9615a56c9a77028f41f8bb4b978d08b8439                                               0.0s 
      => [internal] load build context                                                                                                       0.0s 
      => => transferring context: 894B                                                                                                       0.0s 
-     => [2/3] WORKDIR /data-service/src                                                                                                     0.4s 
+     => [2/3] WORKDIR /app/src                                                                                                              0.4s 
      => [3/3] COPY src/main.py .                                                                                                            0.0s 
      => exporting to image                                                                                                                  0.0s 
      => => exporting layers                                                                                                                 0.0s 
