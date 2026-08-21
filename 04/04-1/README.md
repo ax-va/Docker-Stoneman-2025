@@ -18,6 +18,14 @@ The private key can be protected with a passphrase.
 ```
 docker login
   ↓
+Docker Hub password / personal access token (PAT)
+  ↓
+Docker Hub verifies credentials
+  ↓
+Login successfull
+  ↓
+Docker wants to save the credentials
+  ↓
 docker-credential-pass
   ↓
 pass
@@ -26,11 +34,13 @@ GPG public key
   ↓
 encrypt
   ↓
-encrypted credentials
+credentials stored encrypted
 ```
 
 ```
 docker push / build / pull
+  ↓
+Docker needs stored credentials
   ↓
 docker-credential-pass
   ↓
@@ -40,11 +50,27 @@ encrypted credentials
   ↓
 GPG private key
   ↓
+GPG passphrase (if required)
+  ↓
 decrypt
   ↓
 credentials
   ↓
 Docker authenticates to registry
+```
+
+```
+docker logout
+  ↓
+Docker identifies the configured credential store
+  ↓
+docker-credential-pass
+  ↓
+pass
+  ↓
+Docker Hub credential are removed
+  ↓
+Docker is no longer logged in to Docker Hub
 ```
 
 `"credsStore": "pass"` in `~/.docker/config.json` tells Docker to use`docker-credential-pass` 
@@ -201,3 +227,11 @@ instead of storing registry credentials directly in `~/.docker/config.json`.
   ```
 
 - Check the webpage hub.docker.com/r/axvadev/hello-from-rust
+
+### Log out
+
+- 
+  ```console
+  $ docker logout
+  Removing login credentials for https://index.docker.io/v1/
+  ```
