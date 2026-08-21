@@ -1,0 +1,1 @@
+/home/delorian/PycharmProjects/Docker-Stoneman-2025/03/03-2--example-with-rust/project/target/debug/rust-example: /home/delorian/PycharmProjects/Docker-Stoneman-2025/03/03-2--example-with-rust/project/src/lib.rs /home/delorian/PycharmProjects/Docker-Stoneman-2025/03/03-2--example-with-rust/project/src/main.rs

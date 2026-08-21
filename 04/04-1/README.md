@@ -30,7 +30,7 @@ encrypted credentials
 ```
 
 ```
-docker push / pull
+docker push / build / pull
   ↓
 docker-credential-pass
   ↓
@@ -174,3 +174,30 @@ instead of storing registry credentials directly in `~/.docker/config.json`.
   Password: 
   Login Succeeded
   ```
+
+### Build and Push the Image
+
+- Build the image (to push it to Docker Hub)
+  ```console
+  $ docker image build -t $dockerId/hello-from-rust:v1 .
+  ```
+
+- Find the image by reference
+  ```console
+  $ docker image ls --filter reference="*/hello-from-rust"
+                                                                                                    i Info →   U  In Use
+  IMAGE                        ID             DISK USAGE   CONTENT SIZE   EXTRA
+  axvadev/hello-from-rust:v1   39064a5d2bf1       75.2MB             0B  
+  ```
+
+- Push the image
+  ```console
+  $ docker image push $dockerId/hello-from-rust:v1
+  The push refers to repository [docker.io/axvadev/hello-from-rust]
+  a26d15f96115: Pushed 
+  abc1fba41291: Pushed 
+  66462cc862fe: Mounted from library/debian 
+  v1: digest: sha256:0741527a41d60d020796a047eda6547f3c28f942d6c984b07c7fafeb65188cbd size: 945
+  ```
+
+- Check the webpage hub.docker.com/r/axvadev/hello-from-rust
