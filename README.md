@@ -131,6 +131,11 @@ On Linux, you need only Docker CLI (client), Docker Engine (server), and Docker 
   $  docker image rm -f $(docker image ls -f reference='diamol/*' -q)
   ```
 
+- Find an existing image by its reference and assign a new reference to the same image
+  ```console
+  $ docker image tag hello-from-rust <docker-id>/hello-from-rust:v1
+  ```
+
 ### Multiple Filters
 
   A Docker command can contain multiple `--filter` options.
