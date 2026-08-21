@@ -121,20 +121,22 @@ On Linux, you need only Docker CLI (client), Docker Engine (server), and Docker 
   IMAGE   ID             DISK USAGE   CONTENT SIZE   EXTR
   ```
 
-- Show images (`ls`), filtered (`-f`, `--filter`) by reference (`reference='diamol/*'`), only their IDs (`-q`, `--quiet`)  
+- Show images (`ls`), filtered (`-f`, `--filter`) by reference (`reference='axvadev/*'`), 
+  only their IDs (`-q`, `--quiet`)  
   ```console
-  $ docker image ls -f reference='diamol/*' -q
+  $ docker image ls -f reference='axvadev/*' -q
   ```
 
-- Find the images matching `diamol/*` and remove them (`-rm`), forcing removal when necessary (`-f`, `--force`)
+- Find the images matching `axvadev/*` and remove them (`-rm`), forcing removal when necessary (`-f`, `--force`)
   ```console
-  $  docker image rm -f $(docker image ls -f reference='diamol/*' -q)
+  $  docker image rm -f $(docker image ls -f reference='axvadev/*' -q)
   ```
 
 - Find an existing image by its reference and assign a new reference to the same image
   ```console
   $ docker image tag hello-from-rust <docker-id>/hello-from-rust:v1
   ```
+  Both references now point to the same image ID.
 
 ### Multiple Filters
 
@@ -142,14 +144,14 @@ On Linux, you need only Docker CLI (client), Docker Engine (server), and Docker 
   Multiple filters with different keys are generally combined as `AND`,
   while multiple values for the same keys can act as `OR`:
 
-  - 
+  - `AND`
     ```console
     $ docker container ls \
       --filter status=running \
       --filter name=app
     ```
 
-  - 
+  - `OR`
     ```console
     $ docker image ls \
       --filter reference=diamol/golang:2e \

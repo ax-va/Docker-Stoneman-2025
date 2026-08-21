@@ -64,6 +64,22 @@ Layer 2: Python runtime
 Layer 1: base Linux user space
 ```
 
+### Docker Engine, Docker Daemon, and Docker CLI
+
+*Docker Engine* provides the core Docker functionality for managing resources, 
+such as images, containers, networks, and volumes.
+
+The *Docker CLI* does not manage these resources directly.
+It communicates with Docker Engine through the *Docker API*,
+which is a standard HTTP-based REST API.
+
+The Docker daemon (`dockerd`) is the main background process of Docker Engine
+It runs as a system service, listens for Docker API requests, and manages Docker resources.
+
+```
+Docker CLI → Docker API → Docker daemon (dockerd) → Docker resources
+```
+
 ### Registry, Docker Hub
 
 - An *image registry* is a service for storing and distributing container images.
@@ -71,7 +87,7 @@ Images can be pushed to a registry and pulled from it to run containers on diffe
 
 - *Docker Hub* is Docker's default public image registry.
 
-### Owner Namespace, Repository, Tag
+### Image Reference: Owner Namespace, Repository, Tag
 
 - An *owner namespace* identifies a user or organization that owns a repository
   and provides a namespace for its repository names.
@@ -84,14 +100,21 @@ Images can be pushed to a registry and pulled from it to run containers on diffe
   The `latest` tag does not automatically point to the newest image.
   It is a regular tag that must be explicitly assigned or updated.
 
-For example, `diamol/ch02-hello-diamol:2e` is an *image reference* 
+For example, `axvadev/hello-from-rust:v1` is an *image reference* 
 that points to an image hosted on Docker Hub, 
-where `diamol` is an owner namespace, `ch02-hello-diamol` is a repository, and `2e` is a tag.
+where `axvadev` is an owner namespace (Docker ID), 
+`hello-from-rust` is a repository, and `v1` is a tag.
 If no tag is specified in an image reference, Docker uses `latest` by default.
 
-The fully qualified image reference for this image is `docker.io/diamol/ch02-hello-diamol:2e`,
+The fully qualified image reference for this image is `docker.io/axvadev/hello-from-rust:v1`,
 which explicitly includes the registry domain. 
 For Docker Hub, the registry domain can normally be omitted.
+
+A Docker image can exist locally in the Docker Engine without being stored in any registry.
+A registry is only needed when you want to store and distribute the image remotely.
+
+- Local image: `hello-from-rust:v1`
+- Docker Hub: `axvadev/hello-from-rust:v1`
 
 ### Dockerfile
 
@@ -104,9 +127,9 @@ and the command used to run the application.
 
 ```
 Dockerfile
-  ↓ docker build -t <repository>:<tag> .
+  ↓ docker build -t <image-refernce> .
 Image
-  ↓ docker push <repository>:<tag>
+  ↓ docker push <image-refernce>
 Registry
 ```
 
@@ -124,9 +147,9 @@ so identical layer content does not need to be stored multiple times.
 
 ```
 Registry (by default, Docker Hub)
-  ↓ (optionally: docker pull <repository>:<tag>)
+  ↓ (optionally: docker pull <image-refernce>)
 Image (stored locally; filesystem content is organized into read-only layers)
-  ↓ docker run <repository>:<tag>
+  ↓ docker run <image-refernce>
   ↓ + writable conatiner layer
 Container
 ```
@@ -212,22 +235,6 @@ Serverless platforms may use containers or other isolation technologies internal
 and some allow developers to deploy container images.
 But serverless itself is not a container technology.
 
-### Docker Engine, Docker Daemon, and Docker CLI
-
-*Docker Engine* provides the core Docker functionality for managing resources, 
-such as images, containers, networks, and volumes.
-
-The *Docker CLI* does not manage these resources directly.
-It communicates with Docker Engine through the *Docker API*,
-which is a standard HTTP-based REST API.
-
-The Docker daemon (`dockerd`) is the main background process of Docker Engine
-It runs as a system service, listens for Docker API requests, and manages Docker resources.
-
-```
-Docker CLI → Docker API → Docker daemon (dockerd) → Docker resources
-```
-
 ### Interactive Container
 
 We can start a container in *interactive mode* and enter its isolated environment to execute commands inside it.
@@ -272,7 +279,7 @@ such as cache mounts and secret mounts, which can make builds faster and more se
 - A *multi-stage build* allows different environments to be used during the image build
   while keeping only what is needed in the final image.
 
-- Each `FROM <image>` starts a new build stage. A stage can optionally be named with `AS <stage>`.
+- Each `FROM <image-reference>` starts a new build stage. A stage can optionally be named with `AS <stage>`.
 
 - Files and build artifacts can be copied from one stage to another using 
   `COPY --from=<stage> <source-path> <target-path>`.
