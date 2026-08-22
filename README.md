@@ -158,7 +158,7 @@ On Linux, you need only Docker CLI (client), Docker Engine (server), and Docker 
       --filter reference=image-gallery
     ```
 
-### Restart Docker Daemon After Changing Settings
+### Restart Docker Daemon after Changing Settings
 
   - Windows
     ```console

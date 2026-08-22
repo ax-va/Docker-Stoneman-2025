@@ -1,4 +1,4 @@
-# Sharing Images with Docker Hub and Other Registers
+# Sharing Images with Docker Hub and Other Registries
 
 ## Local Docker Registry
 
