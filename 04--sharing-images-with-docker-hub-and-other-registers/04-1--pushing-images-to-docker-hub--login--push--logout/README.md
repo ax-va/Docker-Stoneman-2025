@@ -2,7 +2,7 @@
 
 ## Sharing Images with Docker Hub
 
-### Optional: Docker Credential Pass on Linux
+### (Optional: Docker Credential Pass on Linux)
 
 By default, Docker may store registry credentials in `~/.docker/config.json`.
 To avoid storing them there in an unencrypted form, 

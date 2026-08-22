@@ -115,6 +115,7 @@ A registry is only needed when you want to store and distribute the image remote
 
 - Local image: `hello-from-rust:v1`
 - Docker Hub: `axvadev/hello-from-rust:v1`
+- Local Docker registry: `localhost:5010/hello-from-rust:v1`
 
 ### Dockerfile
 
@@ -240,7 +241,7 @@ But serverless itself is not a container technology.
 We can start a container in *interactive mode* and enter its isolated environment to execute commands inside it.
 
 ```console
-$ docker run -it diamol/ch02-hello-diamol:2e
+$ docker run -it axvadev/hello-from-rust:v1
 ```
 
 Here 

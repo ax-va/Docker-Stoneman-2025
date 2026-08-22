@@ -157,3 +157,15 @@ On Linux, you need only Docker CLI (client), Docker Engine (server), and Docker 
       --filter reference=diamol/golang:2e \
       --filter reference=image-gallery
     ```
+
+### Restart Docker Daemon After Changing Settings
+
+  - Windows
+    ```console
+    > Restart-Service docker
+    ```
+
+  - Linux
+    ```console
+    $ sudo systemctl restart docker
+    ```
