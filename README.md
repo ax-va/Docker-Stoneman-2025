@@ -140,23 +140,23 @@ On Linux, you need only Docker CLI (client), Docker Engine (server), and Docker 
 
 ### Multiple Filters
 
-  A Docker command can contain multiple `--filter` options.
-  Multiple filters with different keys are generally combined as `AND`,
-  while multiple values for the same keys can act as `OR`:
+A Docker command can contain multiple `--filter` options.
+Multiple filters with different keys are generally combined as `AND`,
+while multiple values for the same keys can act as `OR`:
 
-  - `AND`
-    ```console
-    $ docker container ls \
-      --filter status=running \
-      --filter name=app
-    ```
+- `AND`
+  ```console
+  $ docker container ls \
+    --filter status=running \
+    --filter name=app
+  ```
 
-  - `OR`
-    ```console
-    $ docker image ls \
-      --filter reference=diamol/golang:2e \
-      --filter reference=image-gallery
-    ```
+- `OR`
+  ```console
+  $ docker image ls \
+    --filter reference=diamol/golang:2e \
+    --filter reference=image-gallery
+  ```
 
 ### Restart Docker Daemon after Changing Settings
 
@@ -169,3 +169,42 @@ On Linux, you need only Docker CLI (client), Docker Engine (server), and Docker 
     ```console
     $ sudo systemctl restart docker
     ```
+
+### How to Run a Local Docker Registry
+
+  ```console
+  $ docker container run -d \
+    -p 5010:5000 \
+    --restart always \
+    --name local-registry \
+    registry:3
+  ...
+  012d1244ae2fbf577c7be4b43c85d88079e64eb0f9e3c8eac8c448c7dde6a7d3
+  ```
+
+  - `docker container run` creates and starts a new container;
+  - `-d` (`--detach`) runs the container in the background;
+  - `-p 5010:5000` (`--publish`) maps port `5010` on the host to port `5000` inside the container;
+  - `--restart always` automatically restarts the container if it stops or Docker restarts;
+  - `--name local-registry` assigns the name `local-registry` to the container;
+  - `registry:3` (`docker.io/library/register:3`) uses the Docker image to create the container.
+
+
+    ```
+    localhost:5010
+      ↓
+    host port 5010
+      ↓
+    container port 5000
+      ↓
+    Docker Registry
+    ```
+
+  - Container storage is ephemeral; persistent registry data should be stored in a volume.
+  - Docker requires HTTPS for remote registers by default, but allows HTTP for `localhost` registries.
+  - Using HTTP for a registry on `localhost` is generally acceptable for development
+    because the traffic stays on the local machine.
+    Remote or production registries should use HTTPS.
+  - With `--restart always`, Docker automatically starts the container 
+    when the Docker daemon starts, including after a Linux reboot.
+    The Docker daemon itself must be running.
