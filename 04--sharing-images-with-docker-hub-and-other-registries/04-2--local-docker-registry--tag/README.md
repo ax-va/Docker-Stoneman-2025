@@ -28,12 +28,15 @@
       ↓
     Docker Registry
     ```
-    
-    - Note 1: Container storage is ephemeral; persistent registry data should be stored in a volume.
-    - Note 2: Docker requires HTTPS for remote registers by default, but allows HTTP for `localhost` registries.
-    - Note 3: Using HTTP for a registry on `localhost` is generally acceptable for development
+
+    - Container storage is ephemeral; persistent registry data should be stored in a volume.
+    - Docker requires HTTPS for remote registers by default, but allows HTTP for `localhost` registries.
+    - Using HTTP for a registry on `localhost` is generally acceptable for development
       because the traffic stays on the local machine.
       Remote or production registries should use HTTPS.
+    - With `--restart always`, Docker automatically starts the container 
+      when the Docker daemon starts, including after a Linux reboot.
+      The Docker daemon itself must be running.
 
 
 - Create a new image reference for the existing image
