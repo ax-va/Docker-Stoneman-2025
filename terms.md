@@ -133,8 +133,13 @@ For example:
 Note:
 - Docker does not understand version semantics.
 - Tags such as `3`, `3.2`, `3.2.101`, and `latest` are just strings.
-- Docker does not automatically upate them - each tag must be explicitly assigned to an image.
-
+- Docker does not automatically upate them - each tag must be explicitly assigned to an image:
+  ```console
+  $ docker image tag hello-from-rust hello-from-rust:3
+  $ docker image tag hello-from-rust hello-from-rust:3.2
+  $ docker image tag hello-from-rust hello-from-rust:3.2.101
+  $ docker image tag hello-from-rust hello-from-rust:latest
+  ```
 
 ### Dockerfile
 
