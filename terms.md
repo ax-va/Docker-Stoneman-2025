@@ -125,7 +125,6 @@ Docker image tags can be used to identify different versions of an application.
 A common convention is *Semantic Versioning*: `<major>.<minor>.<patch>`.
 
 For example:
-
 - `3.2.101`
   - `major` (`3`): May contain breaking changes or significant changes in functionality.
   - `minor` (`2`): Adds new functionality while remaining backward compatible with the same major version.
