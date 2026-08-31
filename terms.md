@@ -117,7 +117,6 @@ A registry is only needed when you want to store and distribute the image remote
 - Docker Hub: `axvadev/hello-from-rust:v1`
 - Local Docker registry: `localhost:5010/hello-from-rust:v1`
 
-
 ### Semantic Versioning for Image Tags
 
 Docker image tags can be used to identify different versions of an application.
@@ -299,6 +298,227 @@ and unnecessary stages to be skipped.
 BuildKit also provides more efficient build caching and additional features
 such as cache mounts and secret mounts, which can make builds faster and more secure.
 
+### Image Metadata
+
+Docker images contain *metadata* - information that describes the image and its configuration.
+
+Metadata can include:
+- environment variables;
+- exposed ports;
+- the default command and entrypoint;
+- working directory;
+- user;
+- labels.
+
+#### Environment Variables
+
+The `ENV` instruction defines environment variables that become part of the image configuration
+and are available to processes running inside containers created from the image.
+
+Example:
+```dockerfile
+ENV APP_ENV="production"
+ENV LOG_LEVEL="info"
+```
+
+The values defined with `ENV` can be overridden with `-e` (`--env`) when starting a container
+```console
+$ docker container run \
+  -e APP_ENV="development" \
+  -e LOG_LEVEL="debug" \
+  hello-from-rust
+```
+
+Environment variables are commonly used to configure application behavior 
+without changing the application code or rebuilding the image.
+
+Note: Do not use `ENV` to store passwords, tokens, or other secrets,
+because its values are stored in the image configuration and can be inspected.
+
+When a container requires many environment variables,
+they can be stored in a separate file instead of passing each variable with `-e`.
+
+For example, using a `.env` file
+
+```
+APP_ENV=development
+LOG_LEVEL=debug
+```
+
+we can pass the file with `--env-file` when starting the container
+
+```console
+$ docker container run \
+  --env-file .env \
+  hello-from-rust
+```
+
+Note: Environment files should not be used as secure storage for secrets.
+
+#### Exposed Ports
+
+The `EXPOSE` instruction documents which network ports 
+an application inside the container is expected to listen on.
+
+Note: `EXPOSE` does not make an application listen on a port.
+The application itself must be configured to listen on that port.
+`EXPOSE` only documents the expected container port in the image metadata. 
+
+Example:
+```dockerfile
+EXPOSE 80
+```
+
+This adds port `80` to the image configuration.
+
+`EXPOSE` does not publish the port to the host.
+To make a container port accessible through a host port,
+use `-p` (`--publish`) when starting the container
+
+```console
+$ docker container run -p 8080:80 hello-from-rust
+```
+
+The exposed port and the published port are different concepts:
+- `EXPOSE 80` declares that the application is expected to use port `80`.
+- `-p 8080:80` creates a port mapping from the host to the container.
+
+#### Default Command and Entrypoint
+
+Docker images can define the command that is executed when a container starts.
+
+Two Dockerfile instructions are used for this: `CMD` and `ENTRYPOINT`:
+- `CMD` defines a default command that *can be completely replaced*
+  when the container is started.
+- `ENTRYPOINT` defines an executable and arguments. 
+  Arguments provided with `docker run` are *only appended* to it. 
+
+Note:
+- `CMD` and `ENTRYPOINT` an appear before other instructions in a Dockerfile,
+  but they are conventionally placed near the end.
+- If multiple `CMD` or `ENTRYPOINT` instructions are specified,
+  only the last one takes effect.
+
+##### CMD
+
+`CMD` defines the default command or arguments for a container.
+
+Example:
+```dockerfile
+CMD ["python", "app.py"]
+```
+
+When a container starts without an explicit command, Docker runs the `CMD`
+
+```console
+$ docker container run my-app
+```
+
+The `CMD` can be overridden by specifying another command after the image reference.
+
+Running
+
+```console
+$ docker container run my-app pytest
+```
+
+effectively executes `pytest` instead of `python app.py`. 
+
+##### ENTRYPOINT
+
+`ENTRYPOINT` defines the executable that the container is intended to run.
+
+Example 1:
+```dockerfile
+ENTRYPOINT ["python"]
+```
+
+Arguments specified after the image reference are appended to the `ENTRYPOINT`
+
+```console
+$ docker container run my-app app.py
+```
+
+Example 2:
+```dockerfile
+ENTRYPOINT ["python", "app.py"]
+```
+
+Running
+
+```console
+$ docker container run my-app
+```
+
+effectively executes `python app.py`.
+
+But 
+
+```console
+$ docker container run my-app --debug
+```
+
+effectively executes `python app.py --debug`.
+
+The `ENTRYPOINT` can be explicitly overridden with `--entrypoint`.
+
+Running
+
+```console
+$ docker container run --entrypoint pytest my-app project/tests/unit
+```
+
+effectively executes `pytest project/tests/unit` instead of `python app.py`. 
+
+##### ENTRYPOINT and CMD Together
+
+`ENTRYPOINT` and `CMD` are often used together.
+
+Example:
+```dockerfile
+ENTRYPOINT ["python"]
+CMD ["app.py"]
+```
+
+Here:
+- `ENTRYPOINT` defines the executable: `python`.
+- `CMD` provides its default argument: `app.py`.
+
+Running
+
+```console
+$ docker container run my-app
+```
+
+effectively executes `python app.py`.
+
+But
+
+```console
+$ docker container run my-app test.py
+```
+
+effectively executes `python test.py`.
+
+The value from `test.py` overrides the default `CMD`, while the `ENTRYPOINT` remains `python`.
+
+#### Image Labels
+
+The `LABEL` instruction adds custom metadata to an image as key-value pairs.
+
+Example:
+```dockerfile
+LABEL version="3.2.101"
+LABEL description="Hello from Rust application"
+```
+
+Labels describe the image but do not affect how the application runs.
+
+Note:
+Image labels and image tags are different concepts:
+- a label is metadata stored in the image;
+- a tag is part of an image reference used to identify an image.
+
 ### Multi-Stage Builds
 
 - A *multi-stage build* allows different environments to be used during the image build
@@ -336,6 +556,28 @@ such as cache mounts and secret mounts, which can make builds faster and more se
     COPY --from=test-stage /build.txt /build.txt
     CMD ["cat", "/build.txt"]
     ```
+
+### Golden Image
+
+A *golden image* is a standardized base image created and maintained by an organization.
+
+It is usually built on top of an official image 
+and adds common configuration required by the organization,
+such as certificates, security, settings, tools, or dependencies.
+
+applications then use the golden images as their base 
+instead of using the official image directly.
+
+```
+official image
+  ↓
+golden image
+  ↓
+application image
+```
+
+The purpose of a golden image is to provide a consistent, controlled, 
+and reusable base for multiple applications.
 
 ### Docker Networks
 
