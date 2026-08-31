@@ -117,6 +117,26 @@ A registry is only needed when you want to store and distribute the image remote
 - Docker Hub: `axvadev/hello-from-rust:v1`
 - Local Docker registry: `localhost:5010/hello-from-rust:v1`
 
+
+### Semantic Versioning for Image Tags
+
+Docker image tags can be used to identify different versions of an application.
+
+A common convention is *Semantic Versioning*: `<major>.<minor>.<patch>`.
+
+For example:
+
+- `3.2.101`
+  - `major` (`3`): May contain breaking changes or significant changes in functionality.
+  - `minor` (`2`): Adds new functionality while remaining backward compatible with the same major version.
+  - `patch` (`101`): Contains backward-compatible bug fixes or small changes that do not introduce new functionality.
+
+Note:
+- Docker does not understand version semantics.
+- Tags such as `3`, `3.2`, `3.2.101`, and `latest` are just strings.
+- Docker does not automatically upate them - each tag must be explicitly assigned to an image.
+
+
 ### Dockerfile
 
 A *Dockerfile* defines the base image, application files, dependencies, configuration,
