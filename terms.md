@@ -310,6 +310,11 @@ Metadata can include:
 - user;
 - labels.
 
+Note: 
+A Docker image can contain additional metadata.
+This section covers the most commonly used image configuration medatdata
+and the Dockerfile instructions used to define it.
+
 #### Environment Variables
 
 The `ENV` instruction defines environment variables that become part of the image configuration
@@ -501,6 +506,79 @@ $ docker container run my-app test.py
 effectively executes `python test.py`.
 
 The value from `test.py` overrides the default `CMD`, while the `ENTRYPOINT` remains `python`.
+
+#### Working Directory
+
+The `WORKDIR` instruction sets the current working directory for subsequent Dockerfile instructions
+and for the process started inside a container.
+
+```dockerfile
+WORKDIR /app
+```
+
+For instructions that operate during the image build, such as `RUN`, `COPY`, and `ADD`, 
+`WORKDIR` affects only the instructions that follow it.
+
+Example
+```dockerfile
+WORKDIR /app
+
+COPY . .
+RUN pip install -r requirenments.txt
+
+CMD ["python", "app.py"]
+```
+
+Here:
+- `COPY . .` copies files into `/app`;
+- `RUN` is executed with `/app` as the current working directory.
+
+Note:
+The final `WORKDIR` value stored in the image is also used 
+as the working directory when a container starts.
+Therefore, the process defined by `CMD` or `ENTRYPOINT` starts in that directory
+regardless of whether `CMD` or `ENTRYPOINT` appears *before or after* `WORKDIR` in the Dokerfile.
+
+The working directory can be overridden when a container is started using `-w` (`--workdir`)
+
+```console
+$ docker container run -w /tests my-app pytest
+```
+
+In this case, the container process starts with `/tests` as its working directory.
+
+#### User
+
+The `USER` instruction sets the user that Docker uses to run
+subsequent build instructions and the process inside a container.
+
+```dockerfile
+USER app-user
+```
+
+For instructions executed during the image build, such as `RUN`, 
+`USER` affects the instructions that follow it.
+
+Example
+```dockerfile
+RUN adduser --disabled-password app-user
+
+USER app-user
+
+CMD ["python", "app.py"]
+```
+
+The `python app.py` process runs as `app-user`.
+
+The user can be overridden when starting a container with `-u` (`--user`)
+
+```console
+$ docker container run --user root my-app
+```
+
+This starts the container process as `root`.
+
+Security: Run containers as a non-root user whenever the application does not require root privileges.
 
 #### Image Labels
 
