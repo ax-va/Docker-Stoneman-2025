@@ -1,6 +1,6 @@
 # Sharing Images with Docker Hub and Other Registries
 
-## Lab 4
+## Lab 4: Image Manifest and Registry HTTP API
 
 The goal of this lab is to interact directly with a local Docker Registry using its HTTP API.
 
@@ -27,7 +27,7 @@ which uniquely identifies the manifest by its content.
 ```
 Image tag
   ↓
-Manifest ← manifest digest
+Image manifest ← manifest digest
   |- config digest → config blob (binary large object)
   |
   |- layer digests

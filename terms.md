@@ -156,7 +156,7 @@ which uniquely identifies the manifest by its content.
 ```
 Image tag
   ↓
-Manifest ← manifest digest
+Image manifest ← manifest digest
   |- config digest → config blob (binary large object)
   |
   |- layer digests
