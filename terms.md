@@ -140,6 +140,65 @@ Note:
   $ docker image tag hello-from-rust hello-from-rust:latest
   ```
 
+### Image Manifest
+
+An *image manifest* is a JSON document stored in a container registry that describes a specific image.
+
+It contains references to:
+- the image configuration;
+- the filesystem layers that make up the image.
+
+Each referenced object is identified by its digest.
+
+A manifest also has its own digest, 
+which uniquely identifies the manifest by its content.
+
+```
+Image tag
+  ↓
+Manifest ← manifest digest
+  |- config digest → config blob (binary large object)
+  |
+  |- layer digests
+     |- layer digest → layer blob
+     |- layer digest → layer blob
+     |- layer digest → layer blob
+```
+
+Multiple tags can reference the same manifest and therefore refer to the same image.
+
+Unlike a tag, which is a human-readable reference that can be changed,
+a manifest digest is derived from the manifest content.
+
+### Registry HTTP API
+
+The *Registry HTTP API* is a REST API for communicating directly with a container registry over HTTP.
+
+It provides programmatic access to registry resources such as:
+- repositories;
+- tags;
+- image manifests;
+- blobs and filesystem layers.
+
+The API can be used to query and manage registry content without using the Docker CLI.
+
+Examples:
+- `GET`: `/v2/<repository>/tag/list`
+- `GET`: `/v2/<repository>/manifests/<tag/digest>`
+- `PUT`: `/v2/<repository>/manifests/<tag>`
+- `DELETE`: `/v2/<repository>/manifests/<digest>`
+
+HTTP clients such as `curl` can be used to send requests directly to the Registry HTTP API.
+
+#### Why Use the Registry HTTP API?
+
+- Docker CLI provides convenient high-level commands for common operations
+  such as pushing and pulling images, but it does not expose every registry
+  operation.
+
+- The Registry HTTP API provides direct programmatic access to repositories, tags, manifest,
+  and blobs, and is useful for automation and registry management.
+
 ### Dockerfile
 
 A *Dockerfile* defines the base image, application files, dependencies, configuration,
