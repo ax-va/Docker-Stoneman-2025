@@ -132,6 +132,27 @@ Docker manages the volume's lifecycle and provides commands to create, inspect, 
     <image-reference>
   ```
 
+- Docker also provides the shorter `-v` (`--volume`) syntax for creating mounts
+
+  - Mount a named volume
+    ```console
+    $ docker container run \
+      -v <volume>:<target-path> \
+      <image-reference>
+    ```
+
+  - Mount an anonymous volume    
+    ```console
+    $ docker container run \
+      -v <target-path> \
+      <image-reference>
+    ```
+  
+  - Despite its name, `-v` (`--volume`) can be used to create both *volume mounts* and *bind mounts*.
+  - The `--mount` syntax is more explicit 
+    because the mount type is specified directly with `type=volume` or `type=bind`.
+
+
 - A container can reuse mounts from another container with `--volumes-from`.
   Unlike, `--mount`, `--volumes-from` does not identify the volume directly.
   It copies the mount configuration from another container.
