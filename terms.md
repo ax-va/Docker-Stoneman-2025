@@ -125,12 +125,39 @@ Docker manages the volume's lifecycle and provides commands to create, inspect, 
     <image-reference>
   ```
 
-- If no source is specified, Docker creates an *anonymous volume* with a generated name
-  ```console
-  $ docker container run \
-    --mount type=volume,target=<target-path> \
-    <image-reference>
-  ```
+  - If no source is specified, Docker creates an *anonymous volume* with a generated name
+    ```console
+    $ docker container run \
+      --mount type=volume,target=<target-path> \
+      <image-reference>
+    ```
+  
+  - You can declare a directory as a volume mount point in a Dockerfile:
+    ```dockerfile
+    VOLUME /data
+    ```
+    - The instruction adds volume metadata to the image.
+    - When a container is created from the image without another mount
+      being explicitly provided for that path,
+      Docker creates an *anonymous volume* and mounts it at `/data`.
+    - The `VOLUME` instruction is *not required* to use volumes.
+    - A volume can instead be explicitly mounted when the container is created.
+
+#### Multiple Mounts
+
+A container can have multiple mounts at the same time.
+
+Volume mounts and bind mounts can also be used together
+
+```console
+$ docker container run \
+  --mount type=volume,source=app-data,target=/data \
+  --mount type=volume,source=app-logs,target=/logs \
+  --mount type=bind,source=/home/user/config,target=/config \
+  <image-reference>
+```
+
+Each `--mount` defines a separate mount inside the container.
 
 #### Mounting Over Existing Data
 
@@ -491,7 +518,7 @@ $ docker run -it axvadev/hello-from-rust:v1
 ```
 
 Here 
-- `-i`, `--interactive` keeps the container's standard input (`stdin`) open;
+- `-i`, `--interactive` keeps the container's standard input (`STDIN`) open;
 - `-t`, `--tty` allocates a pseudo-terminal (TTY).
 
 After container starts, the terminal is connected to a shell running inside the container.
@@ -531,7 +558,8 @@ Metadata can include:
 - the default command and entrypoint;
 - working directory;
 - user;
-- labels.
+- labels;
+- volumes.
 
 Note: 
 A Docker image can contain additional metadata.
