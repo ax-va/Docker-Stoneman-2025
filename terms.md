@@ -164,22 +164,39 @@ Docker manages the volume's lifecycle and provides commands to create, inspect, 
   
 - You can declare a directory as a volume mount point in a Dockerfile:
   ```dockerfile
-  VOLUME /data
+  VOLUME <target-path>
   ```
   - The instruction adds volume metadata to the image.
   - When a container is created from the image without another mount
     being explicitly provided for that path,
-    Docker creates an *anonymous volume* and mounts it at `/data`.
+    Docker creates an *anonymous volume* and mounts it at `<target-path>`.
   - The `VOLUME` instruction is *not required* to use volumes.
   - A volume can instead be explicitly mounted when the container is created.
 
 
-- Note:
+- Note 1:
+  - As an *image author*, the `VOLUME <target-path>` instruction in a Dockerfile can be used 
+    as a fail-safe for directories containing persistent application data. 
+    If the user does not explicitly provide a mount for that path,
+    Docker creates an anonymous volume.
+  - As an *image user*, it is generally better to explicitly manage storage with named volumes 
+    instead of relying on automatically created anonymous volumes.
+
+
+- Note 2:
   - Although a volume can be shared between multiple containers,
     this does not mean that it is always safe to use it concurrently.
   - If multiple containers read and write the same files at the same time,
     this can cause conflicts, data corruption, or application-specific problems.
   - A common use of volumes is to *preserve application state when replacing or upgrading a container*.
+
+
+- Note 3:
+  - Removing a container does not normally remove its volumes.
+  - However, `docker container run --rm` also removes anonymous volumes
+    created for the container when the container is automatically removed.
+  - Named volumes are not removed by `--rm`.
+
 
 #### Multiple Mounts
 
