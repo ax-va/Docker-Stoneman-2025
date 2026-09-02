@@ -152,6 +152,14 @@ Docker manages the volume's lifecycle and provides commands to create, inspect, 
   - The `VOLUME` instruction is *not required* to use volumes.
   - A volume can instead be explicitly mounted when the container is created.
 
+
+- Note:
+  - Although a volume can be shared between multiple containers,
+    this does not mean that it is always safe to use it concurrently.
+  - If multiple containers read and write the same files at the same time,
+    this can cause conflicts, data corruption, or application-specific problems.
+  - A common use of volumes is to *preserve application state when replacing or upgrading a container*.
+
 #### Multiple Mounts
 
 A container can have multiple mounts at the same time.

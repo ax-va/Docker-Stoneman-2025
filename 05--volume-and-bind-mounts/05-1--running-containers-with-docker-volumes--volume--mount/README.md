@@ -74,3 +74,11 @@
     demo-volume
     ```
   Removing the volume also removes the data stored in it.
+
+
+- Note:
+  - Although a volume can be shared between multiple containers,
+    this does not mean that it is always safe to use it concurrently.
+  - If multiple containers read and write the same files at the same time,
+    this can cause conflicts, data corruption, or application-specific problems.
+  - A common use of volumes is to *preserve application state when replacing or upgrading a container*.
