@@ -15,6 +15,13 @@
   At this point, `demo-volume` is empty.
 
 
+- List all existing volumes
+    ```console
+    $ docker volume ls
+    DRIVER    VOLUME NAME
+    local     demo-volume
+    ```
+
 - Run a container, mount the volume at `/data` inside the container,
   and automatically remove the container when it exits
     ```console
