@@ -85,13 +85,148 @@ From the container's point of view, the filesystem appears as a single unified f
 so this process is transparent to the application.
 The original image and its layers are never modified.
 
-#### Container Filesystem Persistence
+### Mounts
 
-When a container stops or exits, Docker does not delete its filesystem.
+A *mount* makes data stored outside the container's writable layer available at a path inside the container.
+Data stored in a mount is not part of the container's writable layer.
+Therefore, it can exist independently of the container.
 
-All files created or modified inside the container remain available as long as the container itself still exists.
+Docker commonly uses two types of mounts for persistent or shared data:
+- *bind mount* - a specific path from the host filesystem is mounted into the container;
+- *volume mount* - Docker manages the storage.
 
-The container filesystem is deleted when the container is removed.
+#### Bind Mounts
+
+A `bind mount` mounts an existing file or directory from the host filesystem directly into a container.
+
+```console
+$ docker container run \
+  --mount type=bind,source=<source-path>,target=<target-path> \
+  <image-reference>
+```
+
+Changes made through `<target-path>` inside the container are reflected in `<source-path>` on the host, and vice versa.
+
+#### Volume Mounts (Volumes)
+
+A *volume* is a Docker-managed storage resource that exists independently of containers.
+Docker manages the volume's lifecycle and provides commands to create, inspect, attach, and remove it.
+
+- A volume can be created explicitly
+  ```console
+  $ docker volume create <volume>
+  ```
+
+- It can then be mounted into a container. 
+  If the named volume does not exist, Docker creates it automatically. 
+  ```console
+  $ docker container run \
+    --mount type=volume,source=<volume>,target=<target-path> \
+    <image-reference>
+  ```
+
+- If no source is specified, Docker creates an *anonymous volume* with a generated name
+  ```console
+  $ docker container run \
+    --mount type=volume,target=<target-path> \
+    <image-reference>
+  ```
+
+#### Mounting Over Existing Data
+
+When a mount is attached to a path inside a container,
+the mounted storage becomes visible at that path.
+
+If the path already contains files from the image, 
+those files may be hidden by the mount.
+
+##### Bind Mount
+
+With a bind mount, the existing files at the target path 
+are hidden by the contents of the host directory.
+
+For example, suppose the image contains:
+
+```
+/app
+  |- config.json
+  |- data.txt
+```
+
+and the host contains:
+
+```
+/home/user/data
+  |- host.txt
+```
+
+Mounting the host directory at `/app`
+
+```console
+$ docker container run \
+  --mount type=bind,source=/home/user/data,target=/app \
+  <image-reference>
+```
+
+makes the container see:
+```
+/data
+  |- host.txt
+```
+
+The original `config.json` and `data.txt` are still present in the image,
+but they are hidden while the bind mount is mounted at `/app`.
+
+##### Volume Mount
+
+A volume has special behavior when it is mounted into a non-empty directory in a container.
+
+- If the volume is *empty*, Docker copies the existing contents of the target directory
+  into the volume before mounting it.
+
+  For example, suppose the image contains:
+  
+  ```
+  /data
+    |- config.josn
+    |- data.txt
+  ```
+  
+  and `app-data` is an empty volume. Running
+  
+  ```console
+  $ docker container run \
+    --mount type=volume,source=app-data,target=/data \
+    <image-reference>
+  ```
+  
+  initializes the volume with the existing contents of `/data`:
+  
+  ```
+  Image: /data
+    |- config.josn
+    |- data.txt
+    
+    ↓  copied into empty volume
+  
+  Volume: app-data
+    |- config.josn
+    |- data.txt
+  
+    ↓  mounted
+  
+  Container: /data
+    |- config.josn
+    |- data.txt
+  ```
+
+- If the volume already contains data, its existing contents 
+  are mounted over the target path instead.
+  The files from the image at that path are then hidden.
+
+Note:
+The automatic copying of existing container data applies to an *empty volume*.
+A bind mount does not have this behavior.
 
 ### Docker Engine, Docker Daemon, and Docker CLI
 
