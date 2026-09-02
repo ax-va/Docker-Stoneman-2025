@@ -2,7 +2,7 @@
 
 ## Detached Mode and Hosting Websites
 
-- Run a container in the background without attaching its `stdout` and `stderr` (`-d`, `--detach`).
+- Run a container in the background without attaching its `STDOUT` and `STDERR` (`-d`, `--detach`).
   Publish a container port by mapping a port on the host (your machine) 
   to a port inside the container (`-p <host-port>:<container-port>`, `--publish <host-port>:<container-port>`).
 

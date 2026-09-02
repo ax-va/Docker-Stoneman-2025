@@ -142,6 +142,15 @@ so the output of the container's main process is displayed in the terminal.
 $ docker container start -a <container>
 ```
 
+With `docker run <container>`, `STDOUT` and `STDERR` are attached by default
+unless the container is started in detached mode (`-d`, `--detach`),
+so `-a` is usually unnecessary.
+
+Note:
+- `-a` (`--attach`) - attaches the specified standard streams (`STDIN`, `STDOUT`, or `STDERR`) to the terminal.
+- `-i` (`--interactive`) - keeps the container's `STDIN` open even if it is not attached.
+They are ofen used together when interactive input is required.
+
 ### Images
 
 - Show all images (`ls`)

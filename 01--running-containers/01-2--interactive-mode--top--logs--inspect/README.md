@@ -42,8 +42,8 @@
   ```
 
   Here 
-  - `-i`, `--interactive` keeps the container's standard input (`stdin`) open;
-  - `-t`, `--tty` allocates a pseudo-terminal (TTY).
+  - `-i` (`--interactive`) - keeps the container's standard input (`STDIN`) open;
+  - `-t` (`--tty`) - allocates a pseudo-terminal (TTY).
 
 - Run in the second terminal
 
