@@ -23,7 +23,7 @@ A Docker image is composed of layers.
 Docker images are portable across machines with a compatible OS/CPU platform
 and a compatible container runtime.
 
-### Image Layer
+#### Image Layer
 
 A Docker image consists of multiple read-only *image layers* stacked together.
 
@@ -63,6 +63,28 @@ Layer 3: application dependencies
 Layer 2: Python runtime
 Layer 1: base Linux user space
 ```
+
+#### Copy-on-Write (CoW)
+
+Image layers are read-only, but a container can appear to modify files that come from those layers.
+Docker uses a *copy-on-write (CoW)* mechanism.
+
+When a container tries to modify a file that exists in a read-only image layer:
+1. Docker copies the file into the container's writable layer.
+2. The modification is applied to the copied file.
+3. The original file in the image layer remains unchanged.
+
+From the container's point of view, the filesystem appears as a single unified filesystem,
+so this process is transparent to the application.
+The original image and its layers are never modified.
+
+#### Container Filesystem Persistence
+
+When a container stops or exits, Docker does not delete its filesystem.
+
+All files created or modified inside the container remain available as long as the container itself still exists.
+
+The container filesystem is deleted when the container is removed.
 
 ### Docker Engine, Docker Daemon, and Docker CLI
 

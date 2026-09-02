@@ -113,6 +113,35 @@ On Linux, you need only Docker CLI (client), Docker Engine (server), and Docker 
   $ docker container rm -f $(docker container ls -aq)
   ```
 
+#### Copy Files Between a Container and the Host
+
+`docker container cp` copies files or directories between a container and the host filesystem.
+
+The command works in both directions.
+The container does not need to be running, but it must exist.
+
+- Container → host
+    ```console
+    $ docker container cp <container>:<source-path> <host-destination-path>
+    ```
+
+- Host → container
+    ```console
+    $ docker container cp <host-source-path> <container>:<destination-path>
+    ```
+
+Here `<container>` can be a container name, a full container ID, or a unique prefix of the container ID.
+
+#### Attach to a Container
+
+`-a` (`--attach`) attaches the terminal to the container's standard output 
+and standard error streams when the container is started, 
+so the output of the container's main process is displayed in the terminal.
+
+```console
+$ docker container start -a <container>
+```
+
 ### Images
 
 - Show all images (`ls`)
