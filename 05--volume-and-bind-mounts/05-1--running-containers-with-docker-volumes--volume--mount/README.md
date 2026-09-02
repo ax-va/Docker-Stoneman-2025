@@ -22,6 +22,23 @@
     local     demo-volume
     ```
 
+- Display detailed information about the volume, including its name, driver, creation time,
+  and mount point on the Docker host
+    ```console
+     docker volume inspect demo-volume
+    [
+        {
+            "CreatedAt": "2026-09-02T23:08:22+02:00",
+            "Driver": "local",
+            "Labels": null,
+            "Mountpoint": "/var/lib/docker/volumes/demo-volume/_data",
+            "Name": "demo-volume",
+            "Options": null,
+            "Scope": "local"
+        }
+    ]
+    ```
+
 - Run a container, mount the volume at `/data` inside the container,
   and automatically remove the container when it exits
     ```console
