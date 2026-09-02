@@ -125,23 +125,32 @@ Docker manages the volume's lifecycle and provides commands to create, inspect, 
     <image-reference>
   ```
 
-  - If no source is specified, Docker creates an *anonymous volume* with a generated name
-    ```console
-    $ docker container run \
-      --mount type=volume,target=<target-path> \
-      <image-reference>
-    ```
+- If no source is specified, Docker creates an *anonymous volume* with a generated name
+  ```console
+  $ docker container run \
+    --mount type=volume,target=<target-path> \
+    <image-reference>
+  ```
+
+- A container can reuse mounts from another container with `--volumes-from`.
+  Unlike, `--mount`, `--volumes-from` does not identify the volume directly.
+  It copies the mount configuration from another container.
+  ```console
+  $ docker container run \
+    --volumes-from <source-container> \
+    <image-reference> 
+  ```
   
-  - You can declare a directory as a volume mount point in a Dockerfile:
-    ```dockerfile
-    VOLUME /data
-    ```
-    - The instruction adds volume metadata to the image.
-    - When a container is created from the image without another mount
-      being explicitly provided for that path,
-      Docker creates an *anonymous volume* and mounts it at `/data`.
-    - The `VOLUME` instruction is *not required* to use volumes.
-    - A volume can instead be explicitly mounted when the container is created.
+- You can declare a directory as a volume mount point in a Dockerfile:
+  ```dockerfile
+  VOLUME /data
+  ```
+  - The instruction adds volume metadata to the image.
+  - When a container is created from the image without another mount
+    being explicitly provided for that path,
+    Docker creates an *anonymous volume* and mounts it at `/data`.
+  - The `VOLUME` instruction is *not required* to use volumes.
+  - A volume can instead be explicitly mounted when the container is created.
 
 #### Multiple Mounts
 
