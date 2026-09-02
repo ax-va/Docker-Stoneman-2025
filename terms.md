@@ -64,6 +64,13 @@ Layer 2: Python runtime
 Layer 1: base Linux user space
 ```
 
+Note:
+- The writable layer belongs to a specific container 
+  and exists as long as that container exists.
+- When the container is removed, its writable layer is also removed, 
+  including all files and modifications stored in it.
+- Stopping or exiting a container does not remove its writable layer.
+
 #### Copy-on-Write (CoW)
 
 Image layers are read-only, but a container can appear to modify files that come from those layers.
