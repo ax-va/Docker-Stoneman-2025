@@ -1,6 +1,6 @@
 # Terms
 
-## Core Concepts: Container, Image, Registry, Dockerfile, etc.
+## Core Concepts: Container, Image, Registry, Dockerfile, Volume, etc.
 
 ### Container
 
@@ -84,231 +84,6 @@ When a container tries to modify a file that exists in a read-only image layer:
 From the container's point of view, the filesystem appears as a single unified filesystem,
 so this process is transparent to the application.
 The original image and its layers are never modified.
-
-### Mounts
-
-A *mount* makes data stored outside the container's writable layer available at a path inside the container.
-Data stored in a mount is not part of the container's writable layer.
-Therefore, it can exist independently of the container.
-
-Docker commonly uses two types of mounts for persistent or shared data:
-- *bind mount* - a specific path from the host filesystem is mounted into the container;
-- *volume mount* - Docker manages the storage.
-
-#### Bind Mounts
-
-A `bind mount` mounts an existing file or directory from the host filesystem directly into a container.
-
-```console
-$ docker container run \
-  --mount type=bind,source=<source-path>,target=<target-path> \
-  <image-reference>
-```
-
-Changes made through `<target-path>` inside the container are reflected in `<source-path>` on the host, and vice versa.
-
-#### Volume Mounts (Volumes)
-
-A *volume* is a Docker-managed storage resource that exists independently of containers.
-Docker manages the volume's lifecycle and provides commands to create, inspect, attach, and remove it.
-
-- A volume can be created explicitly
-  ```console
-  $ docker volume create <volume>
-  ```
-
-- It can then be mounted into a container. 
-  If the named volume does not exist, Docker creates it automatically. 
-  ```console
-  $ docker container run \
-    --mount type=volume,source=<volume>,target=<target-path> \
-    <image-reference>
-  ```
-
-- If no source is specified, Docker creates an *anonymous volume* with a generated name
-  ```console
-  $ docker container run \
-    --mount type=volume,target=<target-path> \
-    <image-reference>
-  ```
-
-- Docker also provides the shorter `-v` (`--volume`) syntax for creating mounts
-
-  - Mount a named volume
-    ```console
-    $ docker container run \
-      -v <volume>:<target-path> \
-      <image-reference>
-    ```
-
-  - Mount an anonymous volume    
-    ```console
-    $ docker container run \
-      -v <target-path> \
-      <image-reference>
-    ```
-  
-  - Despite its name, `-v` (`--volume`) can be used to create both *volume mounts* and *bind mounts*.
-  - The `--mount` syntax is more explicit 
-    because the mount type is specified directly with `type=volume` or `type=bind`.
-
-
-- A container can reuse mounts from another container with `--volumes-from`.
-  Unlike, `--mount`, `--volumes-from` does not identify the volume directly.
-  It copies the mount configuration from another container.
-  ```console
-  $ docker container run \
-    --volumes-from <source-container> \
-    <image-reference> 
-  ```
-  
-- You can declare a directory as a volume mount point in a Dockerfile:
-  ```dockerfile
-  VOLUME <target-path>
-  ```
-  - The instruction adds volume metadata to the image.
-  - When a container is created from the image without another mount
-    being explicitly provided for that path,
-    Docker creates an *anonymous volume* and mounts it at `<target-path>`.
-  - The `VOLUME` instruction is *not required* to use volumes.
-  - A volume can instead be explicitly mounted when the container is created.
-
-
-- Note 1:
-  - As an *image author*, the `VOLUME <target-path>` instruction in a Dockerfile can be used 
-    as a fail-safe for directories containing persistent application data. 
-    If the user does not explicitly provide a mount for that path,
-    Docker creates an anonymous volume.
-  - As an *image user*, it is generally better to explicitly manage storage with named volumes 
-    instead of relying on automatically created anonymous volumes.
-
-
-- Note 2:
-  - Although a volume can be shared between multiple containers,
-    this does not mean that it is always safe to use it concurrently.
-  - If multiple containers read and write the same files at the same time,
-    this can cause conflicts, data corruption, or application-specific problems.
-  - A common use of volumes is to *preserve application state when replacing or upgrading a container*.
-
-
-- Note 3:
-  - Removing a container does not normally remove its volumes.
-  - However, `docker container run --rm` also removes anonymous volumes
-    created for the container when the container is automatically removed.
-  - Named volumes are not removed by `--rm`.
-
-
-#### Multiple Mounts
-
-A container can have multiple mounts at the same time.
-
-Volume mounts and bind mounts can also be used together
-
-```console
-$ docker container run \
-  --mount type=volume,source=app-data,target=/data \
-  --mount type=volume,source=app-logs,target=/logs \
-  --mount type=bind,source=/home/user/config,target=/config \
-  <image-reference>
-```
-
-Each `--mount` defines a separate mount inside the container.
-
-#### Mounting Over Existing Data
-
-When a mount is attached to a path inside a container,
-the mounted storage becomes visible at that path.
-
-If the path already contains files from the image, 
-those files may be hidden by the mount.
-
-##### Bind Mount
-
-With a bind mount, the existing files at the target path 
-are hidden by the contents of the host directory.
-
-For example, suppose the image contains:
-
-```
-/app
-  |- config.json
-  |- data.txt
-```
-
-and the host contains:
-
-```
-/home/user/data
-  |- host.txt
-```
-
-Mounting the host directory at `/app`
-
-```console
-$ docker container run \
-  --mount type=bind,source=/home/user/data,target=/app \
-  <image-reference>
-```
-
-makes the container see:
-```
-/data
-  |- host.txt
-```
-
-The original `config.json` and `data.txt` are still present in the image,
-but they are hidden while the bind mount is mounted at `/app`.
-
-##### Volume Mount
-
-A volume has special behavior when it is mounted into a non-empty directory in a container.
-
-- If the volume is *empty*, Docker copies the existing contents of the target directory
-  into the volume before mounting it.
-
-  For example, suppose the image contains:
-  
-  ```
-  /data
-    |- config.josn
-    |- data.txt
-  ```
-  
-  and `app-data` is an empty volume. Running
-  
-  ```console
-  $ docker container run \
-    --mount type=volume,source=app-data,target=/data \
-    <image-reference>
-  ```
-  
-  initializes the volume with the existing contents of `/data`:
-  
-  ```
-  Image: /data
-    |- config.josn
-    |- data.txt
-    
-    ↓  copied into empty volume
-  
-  Volume: app-data
-    |- config.josn
-    |- data.txt
-  
-    ↓  mounted
-  
-  Container: /data
-    |- config.josn
-    |- data.txt
-  ```
-
-- If the volume already contains data, its existing contents 
-  are mounted over the target path instead.
-  The files from the image at that path are then hidden.
-
-Note:
-The automatic copying of existing container data applies to an *empty volume*.
-A bind mount does not have this behavior.
 
 ### Docker Engine, Docker Daemon, and Docker CLI
 
@@ -972,6 +747,230 @@ and reusable base for multiple applications.
 
 - Docker provides an internal *DNS service* 
   that resolves a container name to its IP address inside the network.
+
+### Mounts
+
+A *mount* makes data stored outside the container's writable layer available at a path inside the container.
+Data stored in a mount is not part of the container's writable layer.
+Therefore, it can exist independently of the container.
+
+Docker commonly uses two types of mounts for persistent or shared data:
+- *bind mount* - a specific path from the host filesystem is mounted into the container;
+- *volume mount* - Docker manages the storage.
+
+#### Bind Mounts
+
+A `bind mount` mounts an existing file or directory from the host filesystem directly into a container.
+
+```console
+$ docker container run \
+  --mount type=bind,source=<source-path>,target=<target-path> \
+  <image-reference>
+```
+
+Changes made through `<target-path>` inside the container are reflected in `<source-path>` on the host, and vice versa.
+
+#### Volume Mounts (Volumes)
+
+A *volume* is a Docker-managed storage resource that exists independently of containers.
+Docker manages the volume's lifecycle and provides commands to create, inspect, attach, and remove it.
+
+- A volume can be created explicitly
+  ```console
+  $ docker volume create <volume>
+  ```
+
+- It can then be mounted into a container. 
+  If the named volume does not exist, Docker creates it automatically. 
+  ```console
+  $ docker container run \
+    --mount type=volume,source=<volume>,target=<target-path> \
+    <image-reference>
+  ```
+
+- If no source is specified, Docker creates an *anonymous volume* with a generated name
+  ```console
+  $ docker container run \
+    --mount type=volume,target=<target-path> \
+    <image-reference>
+  ```
+
+- Docker also provides the shorter `-v` (`--volume`) syntax for creating mounts
+
+  - Mount a named volume
+    ```console
+    $ docker container run \
+      -v <volume>:<target-path> \
+      <image-reference>
+    ```
+
+  - Mount an anonymous volume    
+    ```console
+    $ docker container run \
+      -v <target-path> \
+      <image-reference>
+    ```
+  
+  - Despite its name, `-v` (`--volume`) can be used to create both *volume mounts* and *bind mounts*.
+  - The `--mount` syntax is more explicit 
+    because the mount type is specified directly with `type=volume` or `type=bind`.
+
+
+- A container can reuse mounts from another container with `--volumes-from`.
+  Unlike, `--mount`, `--volumes-from` does not identify the volume directly.
+  It copies the mount configuration from another container.
+  ```console
+  $ docker container run \
+    --volumes-from <source-container> \
+    <image-reference> 
+  ```
+  
+- You can declare a directory as a volume mount point in a Dockerfile:
+  ```dockerfile
+  VOLUME <target-path>
+  ```
+  - The instruction adds volume metadata to the image.
+  - When a container is created from the image without another mount
+    being explicitly provided for that path,
+    Docker creates an *anonymous volume* and mounts it at `<target-path>`.
+  - The `VOLUME` instruction is *not required* to use volumes.
+  - A volume can instead be explicitly mounted when the container is created.
+
+
+- Note 1:
+  - As an *image author*, the `VOLUME <target-path>` instruction in a Dockerfile can be used 
+    as a fail-safe for directories containing persistent application data. 
+    If the user does not explicitly provide a mount for that path,
+    Docker creates an anonymous volume.
+  - As an *image user*, it is generally better to explicitly manage storage with named volumes 
+    instead of relying on automatically created anonymous volumes.
+
+
+- Note 2:
+  - Although a volume can be shared between multiple containers,
+    this does not mean that it is always safe to use it concurrently.
+  - If multiple containers read and write the same files at the same time,
+    this can cause conflicts, data corruption, or application-specific problems.
+  - A common use of volumes is to *preserve application state when replacing or upgrading a container*.
+
+
+- Note 3:
+  - Removing a container does not normally remove its volumes.
+  - However, `docker container run --rm` also removes anonymous volumes
+    created for the container when the container is automatically removed.
+  - Named volumes are not removed by `--rm`.
+
+#### Multiple Mounts
+
+A container can have multiple mounts at the same time.
+
+Volume mounts and bind mounts can also be used together
+
+```console
+$ docker container run \
+  --mount type=volume,source=app-data,target=/data \
+  --mount type=volume,source=app-logs,target=/logs \
+  --mount type=bind,source=/home/user/config,target=/config \
+  <image-reference>
+```
+
+Each `--mount` defines a separate mount inside the container.
+
+#### Mounting Over Existing Data
+
+When a mount is attached to a path inside a container,
+the mounted storage becomes visible at that path.
+
+If the path already contains files from the image, 
+those files may be hidden by the mount.
+
+##### Bind Mount
+
+With a bind mount, the existing files at the target path 
+are hidden by the contents of the host directory.
+
+For example, suppose the image contains:
+
+```
+/app
+  |- config.json
+  |- data.txt
+```
+
+and the host contains:
+
+```
+/home/user/data
+  |- host.txt
+```
+
+Mounting the host directory at `/app`
+
+```console
+$ docker container run \
+  --mount type=bind,source=/home/user/data,target=/app \
+  <image-reference>
+```
+
+makes the container see:
+```
+/data
+  |- host.txt
+```
+
+The original `config.json` and `data.txt` are still present in the image,
+but they are hidden while the bind mount is mounted at `/app`.
+
+##### Volume Mount
+
+A volume has special behavior when it is mounted into a non-empty directory in a container.
+
+- If the volume is *empty*, Docker copies the existing contents of the target directory
+  into the volume before mounting it.
+
+  For example, suppose the image contains:
+  
+  ```
+  /data
+    |- config.josn
+    |- data.txt
+  ```
+  
+  and `app-data` is an empty volume. Running
+  
+  ```console
+  $ docker container run \
+    --mount type=volume,source=app-data,target=/data \
+    <image-reference>
+  ```
+  
+  initializes the volume with the existing contents of `/data`:
+  
+  ```
+  Image: /data
+    |- config.josn
+    |- data.txt
+    
+    ↓  copied into empty volume
+  
+  Volume: app-data
+    |- config.josn
+    |- data.txt
+  
+    ↓  mounted
+  
+  Container: /data
+    |- config.josn
+    |- data.txt
+  ```
+
+- If the volume already contains data, its existing contents 
+  are mounted over the target path instead.
+  The files from the image at that path are then hidden.
+
+Note:
+The automatic copying of existing container data applies to an *empty volume*.
+A bind mount does not have this behavior.
 
 ### Docker Compose
 

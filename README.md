@@ -167,7 +167,7 @@ They are ofen used together when interactive input is required.
 
 - Find the images matching `axvadev/*` and remove them (`-rm`), forcing removal when necessary (`-f`, `--force`)
   ```console
-  $  docker image rm -f $(docker image ls -f reference='axvadev/*' -q)
+  $ docker image rm -f $(docker image ls -f reference='axvadev/*' -q)
   ```
 
 - Find an existing image by its reference and assign a new reference to the same image
