@@ -762,13 +762,20 @@ Docker commonly uses two types of mounts for persistent or shared data:
 
 A `bind mount` mounts an existing file or directory from the host filesystem directly into a container.
 
-```console
-$ docker container run \
-  --mount type=bind,source=<source-path>,target=<target-path> \
-  <image-reference>
-```
+- 
+  ```console
+  $ docker container run \
+    --mount type=bind,source=<absolute-source-path>,target=<target-path> \
+    <image-reference>
+  ```
+  - Changes made through `<target-path>` inside the container 
+    are reflected in `<absolute-source-path>` on the host, and vice versa.
 
-Changes made through `<target-path>` inside the container are reflected in `<source-path>` on the host, and vice versa.
+
+- Note:
+  - With `--mount type=bind`, `source` must be an absolute host path.
+  - A shell expression such as `$(pwd)/app/data` can be used to construct the absolute path.
+  - The `-v` (`--volume`) syntax also support relative host paths, e.g., `-v <relative-source-path>:<target-path>`.
 
 #### Volume Mounts (Volumes)
 

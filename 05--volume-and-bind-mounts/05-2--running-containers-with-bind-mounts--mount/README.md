@@ -33,3 +33,21 @@
     ```
   - It sees the changes made by the previous container and adds `Run 2`.
   - The modification is again immediately reflected in `app/data/text.txt` on the host.
+
+
+- Run a new container with using `-v` and the relative path the host directory
+  ```console
+  $ docker container run --rm \
+    -v ./app/data:/data \
+    bind-mount-demo-image
+  Hello from bind mount!
+  Run 1
+  Run 2
+  Run 3
+  ```
+
+
+- Note:
+  - With `--mount type=bind`, `source` must be an absolute host path.
+  - A shell expression such as `$(pwd)/app/data` can be used to construct the absolute path.
+  - The `-v` (`--volume`) syntax also support relative host paths.
