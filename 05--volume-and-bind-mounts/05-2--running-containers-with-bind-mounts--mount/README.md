@@ -35,7 +35,7 @@
   - The modification is again immediately reflected in `app/data/text.txt` on the host.
 
 
-- Run a new container with using `-v` and the relative path the host directory
+- Run a new container with using `-v` and the relative path to the host directory
   ```console
   $ docker container run --rm \
     -v ./app/data:/data \
