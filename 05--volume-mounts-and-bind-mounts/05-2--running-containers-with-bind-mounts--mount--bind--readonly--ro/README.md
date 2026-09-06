@@ -35,7 +35,7 @@
   - The modification is again immediately reflected in `app/data/text.txt` on the host.
 
 
-- Run a new container with using `-v` and the relative path to the host directory
+- Run a new container with using `-v` (`--volume`) and the relative path to the host directory
   ```console
   $ docker container run --rm \
     -v ./app/data:/data \
@@ -45,6 +45,41 @@
   Run 2
   Run 3
   ```
+
+
+- A mount can be made read-only
+
+    -
+      ```console
+      $ docker container run --rm \
+        --mount type=bind,source=$(pwd)/app/data,target=/data,readonly \
+        bind-mount-demo-image
+      Traceback (most recent call last):
+        File "/app/src/main.py", line 5, in <module>
+          with file.open("r+") as f:
+               ~~~~~~~~~^^^^^^
+        File "/usr/local/lib/python3.13/pathlib/_local.py", line 537, in open
+          return io.open(self, mode, buffering, encoding, errors, newline)
+                 ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+      OSError: [Errno 30] Read-only file system: '/data/text.txt'
+      ```
+  
+    - 
+      ```console
+      $ docker container run --rm \
+        -v ./app/data:/data:ro \
+        bind-mount-demo-image
+      Traceback (most recent call last):
+      File "/app/src/main.py", line 5, in <module>
+        with file.open("r+") as f:
+             ~~~~~~~~~^^^^^^
+      File "/usr/local/lib/python3.13/pathlib/_local.py", line 537, in open
+        return io.open(self, mode, buffering, encoding, errors, newline)
+               ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+      OSError: [Errno 30] Read-only file system: '/data/text.txt'
+      ```
+    
+    The read-only option can be used with both bind mounts and volume mounts.
 
 
 - Note:

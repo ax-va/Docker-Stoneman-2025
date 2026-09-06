@@ -867,6 +867,27 @@ Docker manages the volume's lifecycle and provides commands to create, inspect, 
     created for the container when the container is automatically removed.
   - Named volumes are not removed by `--rm`.
 
+#### Read-Only Mounts
+
+By default, mounts are read-write: the container can read and modify the mounted data.
+
+- A mount can be made read-only with the `readonly` option
+  ```console
+  $ docker container run \
+    --mount type=bind,source=<absolute-source-path>,target=<target-path>,readonly \
+    <image-reference>
+  ```
+
+- or with `ro` when using the shorter `-v` (`--volume`) syntax
+  ```console
+  $ docker container run \
+    -v <absolute-source-path>:<target-path>:ro \
+    <image-reference>
+  ```
+
+The container can read files from `<target-path>`, but it cannot modify them.
+The read-only option can be used with both bind mounts and volume mounts.
+
 #### Multiple Mounts
 
 A container can have multiple mounts at the same time.
