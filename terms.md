@@ -762,6 +762,17 @@ Docker commonly uses two types of mounts for persistent or shared data:
 
 A `bind mount` mounts an existing file or directory from the host filesystem directly into a container.
 
+- Note 1: 
+
+  This can include network filesystems, such as NFS or SMB shares, 
+  if they are already mounted on the host and accessible through the host filesystem.
+
+  - *NFS (Network File System)* - a protocol commonly used to share filesystems 
+    between Unix/Linux systems over a network.
+
+  - *SMB (Server Message Block)* - a protocol commonly used to share files and 
+    directories over a network, especially in Windows environments.
+
 - 
   ```console
   $ docker container run \
@@ -772,8 +783,7 @@ A `bind mount` mounts an existing file or directory from the host filesystem dir
     are reflected in `<absolute-source-path>` on the host, and vice versa.
 
 
-- Note:
-  - With `--mount type=bind`, `source` must be an absolute host path.
+- Note 2:
   - A shell expression such as `$(pwd)/app/data` can be used to construct the absolute path.
   - The `-v` (`--volume`) syntax also support relative host paths, e.g., `-v <relative-source-path>:<target-path>`.
 
