@@ -45,53 +45,63 @@
   - `-i` (`--interactive`) - keeps the container's standard input (`STDIN`) open;
   - `-t` (`--tty`) - allocates a pseudo-terminal (TTY).
 
+
 - Run in the second terminal
 
-    ```console
-    $ docker container ls 
-    CONTAINER ID   IMAGE            COMMAND     CREATED          STATUS          PORTS     NAMES
-    5b43ddacccf3   diamol/base:2e   "/bin/sh"   12 minutes ago   Up 12 minutes             pensive_faraday
-    ```
-    
-    ```console
-    $ docker container top 5b
-    UID                 PID                 PPID                C                   STIME               TTY                 TIME                CMD
-    root                399364              399339              0                   18:01               pts/0               00:00:00            /bin/sh
-    ```
-    
-    ```console
-    $ docker container logs 5b
-    / # hostname
-    5b43ddacccf3
-    / # date
-    Thu Aug 13 16:06:06 UTC 2026
-    / # ls
-    bin    dev    etc    home   lib    media  mnt    opt    proc   root   run    sbin   srv    sys    tmp    usr    var
-    ```
-    
-    ```console
-    $ docker container inspect 5b
-    [
-        {
-            "Id": "5b43ddacccf3c21b5b477e41de425d20cfbfc8f55f35e73748af6909f87a20f8",
-            "Created": "2026-08-13T16:01:01.705070478Z",
-            "Path": "/bin/sh",
-            "Args": [],
-            "State": {
-                "Status": "running",
-                "Running": true,
-                "Paused": false,
-                "Restarting": false,
-                "OOMKilled": false,
-                "Dead": false,
-                "Pid": 399364,
-                "ExitCode": 0,
-                "Error": "",
-                "StartedAt": "2026-08-13T16:01:01.835158885Z",
-                "FinishedAt": "0001-01-01T00:00:00Z"
-            },
-    ...
-    ```
+    - 
+      ```console
+      $ docker container ls 
+      CONTAINER ID   IMAGE            COMMAND     CREATED          STATUS          PORTS     NAMES
+      5b43ddacccf3   diamol/base:2e   "/bin/sh"   12 minutes ago   Up 12 minutes             pensive_faraday
+      ```
+
+    -
+      ```console
+      $ docker container top 5b
+      UID                 PID                 PPID                C                   STIME               TTY                 TIME                CMD
+      root                399364              399339              0                   18:01               pts/0               00:00:00            /bin/sh
+      ```
+
+    -
+      ```console
+      $ docker container logs 5b
+      / # hostname
+      5b43ddacccf3
+      / # date
+      Thu Aug 13 16:06:06 UTC 2026
+      / # ls
+      bin    dev    etc    home   lib    media  mnt    opt    proc   root   run    sbin   srv    sys    tmp    usr    var
+      ```
+  
+      Note: `docker container logs` displays the output captured from the container.
+      It does not attach the terminal's `STDIN` to the container and does not start an interactive session.
+      For containers running with a TTY, the logs may also contain shell prompts 
+      and echoed commands from an earlier interactive session. 
+
+    -    
+       ```console
+       $ docker container inspect 5b
+       [
+           {
+               "Id": "5b43ddacccf3c21b5b477e41de425d20cfbfc8f55f35e73748af6909f87a20f8",
+               "Created": "2026-08-13T16:01:01.705070478Z",
+               "Path": "/bin/sh",
+               "Args": [],
+               "State": {
+                   "Status": "running",
+                   "Running": true,
+                   "Paused": false,
+                   "Restarting": false,
+                   "OOMKilled": false,
+                   "Dead": false,
+                   "Pid": 399364,
+                   "ExitCode": 0,
+                   "Error": "",
+                   "StartedAt": "2026-08-13T16:01:01.835158885Z",
+                   "FinishedAt": "0001-01-01T00:00:00Z"
+           },
+       ...
+       ```
 
 - Close the terminal session in the first terminal
     ```console
