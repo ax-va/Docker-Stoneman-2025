@@ -764,14 +764,23 @@ A `bind mount` mounts an existing file or directory from the host filesystem dir
 
 - Note 1: 
 
-  This can include network filesystems, such as NFS or SMB shares, 
-  if they are already mounted on the host and accessible through the host filesystem.
+  Bind mounts can also expose storage that is not physically stored on the local host,
+  provided that the storage is already mounted and accessible through the host filesystem.
+  This can include distributed or network storage systems:
 
   - *NFS (Network File System)* - a protocol commonly used to share filesystems 
     between Unix/Linux systems over a network.
 
   - *SMB (Server Message Block)* - a protocol commonly used to share files and 
     directories over a network, especially in Windows environments.
+  
+  - *Azure Files* - a cloud file-sharing service that can expose storage using protocols such as SMB or NFS.
+  
+  - *AWS S3* - a cloud object storage service. It is not a traditional filesystem, 
+    but it can be exposed through filesystem-like mounting tools.
+  
+  Distributed storage may not provide exactly the same filesystem semantics as the host's local filesystem.
+  Applications that depend on unsupported filesystem operations may therefore fail.
 
 - 
   ```console
