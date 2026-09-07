@@ -776,16 +776,17 @@ A `bind mount` mounts an existing file or directory from the host filesystem dir
 - 
   ```console
   $ docker container run \
-    --mount type=bind,source=<absolute-source-path>,target=<target-path> \
+    --mount type=bind,source=<absolute-source-path>,target=<image-OS-specific-path> \
     <image-reference>
   ```
-  - Changes made through `<target-path>` inside the container 
+  - Changes made through `<image-OS-specific-path>` inside the container 
     are reflected in `<absolute-source-path>` on the host, and vice versa.
 
 
 - Note 2:
   - A shell expression such as `$(pwd)/app/data` can be used to construct the absolute path.
-  - The `-v` (`--volume`) syntax also support relative host paths, e.g., `-v <relative-source-path>:<target-path>`.
+  - The `-v` (`--volume`) syntax also support relative host paths: 
+    `-v <relative-source-path>:<image-OS-specific-path>`.
 
 #### Volume Mounts (Volumes)
 
@@ -801,14 +802,14 @@ Docker manages the volume's lifecycle and provides commands to create, inspect, 
   If the named volume does not exist, Docker creates it automatically. 
   ```console
   $ docker container run \
-    --mount type=volume,source=<volume>,target=<target-path> \
+    --mount type=volume,source=<volume>,target=<image-OS-specific-path> \
     <image-reference>
   ```
 
 - If no source is specified, Docker creates an *anonymous volume* with a generated name
   ```console
   $ docker container run \
-    --mount type=volume,target=<target-path> \
+    --mount type=volume,target=<image-OS-specific-path> \
     <image-reference>
   ```
 
@@ -817,14 +818,14 @@ Docker manages the volume's lifecycle and provides commands to create, inspect, 
   - Mount a named volume
     ```console
     $ docker container run \
-      -v <volume>:<target-path> \
+      -v <volume>:<image-OS-specific-path> \
       <image-reference>
     ```
 
   - Mount an anonymous volume    
     ```console
     $ docker container run \
-      -v <target-path> \
+      -v <image-OS-specific-path> \
       <image-reference>
     ```
   
@@ -843,7 +844,7 @@ Docker manages the volume's lifecycle and provides commands to create, inspect, 
   ```
   
 - You can declare a directory as a volume mount point in a Dockerfile:
-  ```dockerfile
+  ```
   VOLUME <target-path>
   ```
   - The instruction adds volume metadata to the image.
@@ -884,18 +885,18 @@ By default, mounts are read-write: the container can read and modify the mounted
 - A mount can be made read-only with the `readonly` option
   ```console
   $ docker container run \
-    --mount type=bind,source=<absolute-source-path>,target=<target-path>,readonly \
+    --mount type=bind,source=<absolute-source-path>,target=<image-OS-specific-path>,readonly \
     <image-reference>
   ```
 
 - or with `ro` when using the shorter `-v` (`--volume`) syntax
   ```console
   $ docker container run \
-    -v <absolute-source-path>:<target-path>:ro \
+    -v <absolute-source-path>:<image-OS-specific-path>:ro \
     <image-reference>
   ```
 
-The container can read files from `<target-path>`, but it cannot modify them.
+The container can read files from `<image-OS-specific-path>`, but it cannot modify them.
 The read-only option can be used with both bind mounts and volume mounts.
 
 #### Multiple Mounts
