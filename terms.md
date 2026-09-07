@@ -1052,6 +1052,19 @@ Note:
 The automatic copying of existing container data applies to an *empty volume*.
 A bind mount does not have this behavior.
 
+### Container Filesystem
+
+A container sees a single unified filesystem, 
+but different paths in that filesystem can be backed by different storage sources.
+
+The filesystem can include:
+
+- *image layers* - read-only layers that provide the initial filesystem;
+- *writable layer* - container-specific storage for changes made to the image filesystem;
+- *volume mounts* - paths backed by Docker-managed volumes;
+- *local bind mounts* - paths backed by files or directories on the host filesystem;
+- *distributed bind mounts* - paths backed by storage that is accessible through the host filesystem, such as NFS.
+
 ### Docker Compose
 
 - *Docker Compose* is used to define and manage multi-container applications.
