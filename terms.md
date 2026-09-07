@@ -922,10 +922,10 @@ the mounted storage becomes visible at that path.
 If the path already contains files from the image, 
 those files may be hidden by the mount.
 
-##### Bind Mount
+##### Bind-Mount Directories → Replacement
 
-With a bind mount, the existing files at the target path 
-are hidden by the contents of the host directory.
+When a directory is bind-mounted over an existing directory in the container,
+the existing contents of the target directory are hidden by the mounted host directory.
 
 For example, suppose the image contains:
 
@@ -952,14 +952,46 @@ $ docker container run \
 
 makes the container see:
 ```
-/data
+/app
   |- host.txt
 ```
 
 The original `config.json` and `data.txt` are still present in the image,
 but they are hidden while the bind mount is mounted at `/app`.
 
-##### Volume Mount
+##### Bind-Mount Single Files → Merge
+
+A single file can also be bind-mounted to a file path 
+inside an existing image directory, but not for Windows Server containers.
+
+For example, suppose the image contains:
+
+```
+/app
+  |- config.json
+  |- data.txt
+```
+
+Mounting a single file at `/app`
+
+```console
+$ docker container run \
+  --mount type=bind,source=/home/user/settings.json,target=/app/settings.json \
+  <image-reference>
+```
+
+makes the container see:
+```
+/app
+  |- config.json
+  |- data.txt
+  |- settings.json
+```
+
+In this case, `/app` itself is not replaced by a mount.
+Only `/app/settings.json` is a mount point, so the other files in `/app` remain visible.
+
+##### Volumes
 
 A volume has special behavior when it is mounted into a non-empty directory in a container.
 
