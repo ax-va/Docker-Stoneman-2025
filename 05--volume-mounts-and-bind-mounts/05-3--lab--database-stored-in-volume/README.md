@@ -1,6 +1,6 @@
 # Volume Mounts and Bind Mounts
 
-## Lab 5
+## Lab 5: Database Stored in a Volume
 
 ### Task
 
