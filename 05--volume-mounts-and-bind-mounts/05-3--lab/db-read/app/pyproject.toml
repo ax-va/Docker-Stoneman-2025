@@ -1,0 +1,11 @@
+[project]
+name = "db-read"
+version = "0.1.0"
+requires-python = ">=3.12,<4.0"
+dependencies = [
+    "polars>=1.44.1,<2.0.0",
+]
+
+[build-system]
+requires = ["poetry-core>=2.4.3,<3.0.0"]
+build-backend = "poetry.core.masonry.api"

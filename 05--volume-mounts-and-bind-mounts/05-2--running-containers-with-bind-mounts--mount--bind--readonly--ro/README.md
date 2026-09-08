@@ -1,4 +1,4 @@
-# Volume and Bind Mounts
+# Volume Mounts and Bind Mounts
 
 ## Running Containers with Bind Mounts
 

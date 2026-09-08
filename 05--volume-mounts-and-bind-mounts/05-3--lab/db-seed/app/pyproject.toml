@@ -1,0 +1,12 @@
+[project]
+name = "db-seed"
+version = "0.1.0"
+requires-python = ">=3.12,<4.0"
+dependencies = [
+    "faker>=40.38.0,<41.0.0",
+    "sqlmodel>=0.0.42,<0.1.0"
+]
+
+[build-system]
+requires = ["poetry-core>=2.4.3,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
