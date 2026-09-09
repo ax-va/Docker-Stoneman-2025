@@ -1235,3 +1235,40 @@ Then the services can still discover each other by service name.
 
 Explicit networks become useful when the application needs more control
 over which services can communicate with each other.
+
+##### Volumes
+
+`volumes` defines named volumes that services can use for persistent data storage.
+
+Example 1:
+
+```yaml
+services:
+  database:
+    image: postgres:18
+    volumes:
+      - db-data:/var/lib/postresql/data
+
+volumes:
+  db-data:
+```
+
+Here:
+  - `db-data` is the named volume;
+  - `/var/lib/postresql/data` is the path inside the container where PostgreSQL stores its data.
+
+Compose creates the declared volume when it is needed.
+The volume exists independently of the service containers, 
+so its data can persist when containers are replaced or removed.
+
+Note:
+If a volume is declared as `external`, Compose does not create it.
+The volume must already exist before the application is started.
+
+Example 2:
+
+```yaml
+volumes:
+  db-data:
+    external: true
+```
