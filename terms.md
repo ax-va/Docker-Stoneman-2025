@@ -1186,38 +1186,49 @@ A service can use an existing image or define how its image should be built.
 
 `networks` defines Docker networks that services can use to communicate with each other.
 
-Example 1:
+- Example 1:
 
-```yaml
-services:
-  web:
-    image: my-web-app:0.1.0
-    networks:
-      - app-net
-
-  database:
-    image: postgres:18
-    networks:
-      - app-net
-
-networks:
-  app-net:
-```
-
+  ```yaml
+  services:
+    web:
+      image: my-web-app:0.1.0
+      networks:
+        - app-net
+  
+    database:
+      image: postgres:18
+      networks:
+        - app-net
+  
+  networks:
+    app-net:
+  ```
+  
 Unlike running containers manually, you do not need to create the network separately.
 Compose creates the declared networks and connects the services containers to them.
 
-Note:
-If a network is declared as `external`, Compose does not create it.
-The network must already exist before the application is started.
+- Note:
+  - If a network is declared as `external`, Compose does not create it.
+    The network must already exist before the application is started.
+  - The `name` property specifies the actual Docker network name.
+    If `name` is omitted for an extrenal resource, 
+    Compose uses the Compose resource key as the actual Docker resource name.
 
-Example 2:
 
-```yaml
-networks:
-  app-net:
-    external: true
-```
+- Example 2:
+
+  ```yaml
+  networks:
+    app-net:
+      name: my-net
+      external: true
+  ```
+  
+  Here:
+  - `app-net` is the network name used inside the Compose file;
+  - `my-net` is the actual Docker network that must already exist.
+  
+  Therefore, services reference `app-net`, while Compose connects them to the existing `my-net` Docker network.
 
 Services connected to the same Compose network can communicate using their service names as hostnames.
 To connect to an application listening on a specific port, they can use `<service>:<port>`.
@@ -1240,35 +1251,47 @@ over which services can communicate with each other.
 
 `volumes` defines named volumes that services can use for persistent data storage.
 
-Example 1:
+- Example 1:
 
-```yaml
-services:
-  database:
-    image: postgres:18
-    volumes:
-      - db-data:/var/lib/postresql/data
-
-volumes:
-  db-data:
-```
-
-Here:
-  - `db-data` is the named volume;
-  - `/var/lib/postresql/data` is the path inside the container where PostgreSQL stores its data.
+  ```yaml
+  services:
+    database:
+      image: postgres:18
+      volumes:
+        - db-data:/var/lib/postresql/data
+  
+  volumes:
+    db-data:
+  ```
+  
+  Here:
+    - `db-data` is the named volume;
+    - `/var/lib/postresql/data` is the path inside the container where PostgreSQL stores its data.
 
 Compose creates the declared volume when it is needed.
 The volume exists independently of the service containers, 
 so its data can persist when containers are replaced or removed.
 
-Note:
-If a volume is declared as `external`, Compose does not create it.
-The volume must already exist before the application is started.
+- Note:
+   - If a volume is declared as `external`, Compose does not create it.
+     The volume must already exist before the application is started.
 
-Example 2:
+   - The `name` property specifies the actual Docker volume name.
+     If `name` is omitted for an extrenal resource, 
+     Compose uses the Compose resource key as the actual Docker resource name.
 
-```yaml
-volumes:
-  db-data:
-    external: true
-```
+
+- Example 2:
+
+  ```yaml
+  volumes:
+    db-data:
+      name: my-volume
+      external: true
+  ```
+  
+  Here:
+  - `db-data` is the volume name used inside the Compose file;
+  - `my-volume` is the actual Docker volume that must already exist.
+  
+  Therefore, services reference `db-data`, while Compose mounts the existing `my-volume` Docker volume.
