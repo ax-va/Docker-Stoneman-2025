@@ -1076,3 +1076,109 @@ The filesystem can include:
 - Docker Compose does not replace Docker networks.
   By default, Compose creates a network for the application and connects its services to that network,
   allowing them to communicate using service names.
+
+#### Docker Compose File
+
+A *Docker Compose file* is a YAML file that describes 
+the desired state of an application composed of one or more services.
+
+The main top-level elements can include:
+
+- `services` - defines the application services that Compose manages.
+- `networks` - defines networks that services can connect to.
+- `volumes` - defines named volumes that services can use for persistent storage.
+
+A basic structure looks like this:
+
+```yaml
+services:
+  web:
+    image: my-web-app:0.1.0
+    ports:
+      - "8080:80"
+    environment:
+      APP_ENV: production
+    networks:
+      - app-net
+
+  database:
+    image: my-database:0.1.0
+    volumes:
+      - app-data:/data
+    networks:
+      - app-net
+
+networks:
+  app-net:
+
+volumes:
+  app-data:
+```
+
+##### Services
+
+Each entry under `services` is a *service definition* that describes
+how containers for that service should be created and configured.
+
+A service is *not a container*. 
+It is a definition that Compose uses to create and manage one or more containers.
+
+```
+service definition
+  ↓  Compose creates
+container(s)
+```
+
+A service can define properties such as:
+- `image` - the image used to create the service containers.
+- `ports` - publishes container ports on the host.
+- `environment` - sets environment variable inside the containers.
+- `volumes` - mounts volumes or host paths into the containers.
+- `networks` - connects the containers to Docker networks.
+
+The service name also identifies the service within the Compose application
+and can be used by other services for network communication.
+
+###### Image and Build
+
+A service can use an existing image or define how its image should be built.
+
+- If only `image` is specified
+
+  ```yaml
+  services:
+    web:
+      image: my-web-app:0.1.0
+  ```
+  
+  Compose uses the specified image.
+  If the image is not available locally, Docker can pull it from a registry.
+
+
+- A service can also define a build configuration
+  
+  ```yaml
+  services:
+    web:
+      build:
+        context: ./web
+        dockerfile: Dockerfile
+      image: my-web-app:0.1.0
+  ```
+  Here:
+    - `build` - tells Compose how to build the image.
+    - `context` - specifies the build context.
+    - `dockerfile` - specifies the Dockerfile relative to the build context.
+    - `image` - specifies the name and tag assigned to the build image.
+
+
+- The image therefore does not have to be built separately before using Docker Compose.
+
+  - For example:
+    ```console
+    $ docker compose up --build
+    ```
+    builds the required images and then creates and starts the service containers.
+    Without `--build`, `docker compose up` does not necessarily rebuild an image
+    just because the application source has changed.
+
