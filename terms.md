@@ -1166,9 +1166,9 @@ A service can use an existing image or define how its image should be built.
       image: my-web-app:0.1.0
   ```
   Here:
-    - `build` - tells Compose how to build the image.
-    - `context` - specifies the build context.
-    - `dockerfile` - specifies the Dockerfile relative to the build context.
+    - `build` - tells Compose how to build the image;
+    - `context` - specifies the build context;
+    - `dockerfile` - specifies the Dockerfile relative to the build context;
     - `image` - specifies the name and tag assigned to the build image.
 
 
