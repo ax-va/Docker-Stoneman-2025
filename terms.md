@@ -1182,3 +1182,56 @@ A service can use an existing image or define how its image should be built.
     Without `--build`, `docker compose up` does not necessarily rebuild an image
     just because the application source has changed.
 
+##### Networks
+
+`networks` defines Docker networks that services can use to communicate with each other.
+
+Example 1:
+
+```yaml
+services:
+  web:
+    image: my-web-app:0.1.0
+    networks:
+      - app-net
+
+  database:
+    image: postgres:18
+    networks:
+      - app-net
+
+networks:
+  app-net:
+```
+
+Unlike running containers manually, you do not need to create the network separately.
+Compose creates the declared networks and connects the services containers to them.
+
+Note:
+If a network is declared as `external`, Compose does not create it.
+The network must already exist before the application is started.
+
+Example 2:
+
+```yaml
+networks:
+  app-net:
+    external: true
+```
+
+Services connected to the same Compose network can communicate using their service names as hostnames.
+To connect to an application listening on a specific port, they can use `<service>:<port>`.
+For example, PostgreSQL listens on port `5432` by default,
+so the `web` service can connect to the `database` service using `database:5432`. 
+
+###### Default Network
+
+An explicit network definition is not required for a simple Compose application.
+
+If services do not specify any networks, 
+Compose creates a default network for the application
+and connects those services to it automatically.
+Then the services can still discover each other by service name.
+
+Explicit networks become useful when the application needs more control
+over which services can communicate with each other.
