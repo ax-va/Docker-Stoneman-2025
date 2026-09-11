@@ -1117,11 +1117,14 @@ volumes:
 
 ##### Services
 
+A *service* is a definition of an application component, not a container itself.
+
 Each entry under `services` is a *service definition* that describes
 how containers for that service should be created and configured.
 
-A service is *not a container*. 
-It is a definition that Compose uses to create and manage one or more containers.
+By default, Docker Compose typically runs one container for each service,
+but a service can also be scaled to multiple containers 
+created from the same service definition.
 
 ```
 service definition
