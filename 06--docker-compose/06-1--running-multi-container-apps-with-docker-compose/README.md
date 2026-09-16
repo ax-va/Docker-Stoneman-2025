@@ -185,13 +185,14 @@ volumes:
   depends_on:
     - data-service
   ```
-  The short form establishes a startup dependency, but it does not wait for the dependency to become healthy.
+  The short form defines the startup order: Compose starts `data-service` before `app`, 
+  but it does not check whether `data-service` is healthy or ready to accept requests.
 
   Using
   ```yaml
   condition: service_healthy
   ```
-  connects the dependency to the `healthcheck`.
+  makes Compose wait until the dependency passes its `healthcheck` before starting the dependent service.
 
 
 ### Start the Application
