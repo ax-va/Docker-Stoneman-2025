@@ -48,7 +48,7 @@ The `--build` option tells Compose to build the service images before starting t
 Without `--build`, Compose can reuse already existing images instead of rebuilding them 
 after changes to the application source or Dockerfiles.
 
-### The Detached Mode and Logs
+### Detached Mode and Logs
 
 The `-d` (`--detach`) option starts the service in the background and returns control of the terminal
 
