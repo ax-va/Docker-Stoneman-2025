@@ -1347,3 +1347,8 @@ so its data can persist when containers are replaced or removed.
   - `my-volume` is the actual Docker volume that must already exist.
   
   Therefore, services reference `db-data`, while Compose mounts the existing `my-volume` Docker volume.
+
+
+#### Compose File Visualization
+
+See https://github.com/pmsipilot/docker-compose-viz

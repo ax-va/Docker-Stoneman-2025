@@ -195,7 +195,7 @@ volumes:
   makes Compose wait until the dependency passes its `healthcheck` before starting the dependent service.
 
 
-### Start the Application
+### Start and Stop the Application
 
 ```console
 $ docker compose up --build
@@ -221,22 +221,50 @@ It:
 - creates and starts the service containers;
 - attaches to the containers and displays their logs.
 
-The `--build` option tells Compose to build the service images before starting the containers.
+By default, `docker compose up` attaches to the service containers and displays their logs in the terminal.
+Press `Ctrl+C` to stop the running services. 
+Alternatively, you can stop the application in another terminal in the same directory with
 
-Without `--build`, Compose can reuse already existing images instead of rebuilding them 
-after changes to the application source or Dockerfiles.
-
-Press `Ctrl+C` to stop the running services.
-Alternatively, you can stop the application in another console in the same directory with
 ```console
 $ docker compose stop
 ```
+
 Stopping the application this way does not remove its containers, networks, or volumes.
 
 The application can be started again with
 ```console
 $ docker compose start
 ```
+
+The `--build` option tells Compose to build the service images before starting the containers.
+
+Without `--build`, Compose can reuse already existing images instead of rebuilding them 
+after changes to the application source or Dockerfiles.
+
+### The Detached Mode and Logs
+
+The `-d` (`--detach`) option starts the service in the background and returns control of the terminal
+
+```console
+$ docker compose up -d
+```
+
+The application continues running after the command exits.
+
+The logs accumulated so far can be viewed separately with
+
+```console
+$ docker compose logs
+```
+
+To display the accumulated logs and continue displaying new log output as it os produced, 
+use the `-f` (`--follow`) option
+
+```console
+$ docker compose logs -f
+```
+
+`-f` (`--follow`) keeps the command running.
 
 ### Remove the Application
 
