@@ -1092,8 +1092,8 @@ A basic structure looks like this:
 
 ```yaml
 services:
-  web:
-    image: my-web-app:0.1.0
+  api:
+    image: my-api-app:0.1.0
     ports:
       - "8080:80"
     environment:
@@ -1150,8 +1150,8 @@ A service can use an existing image or define how its image should be built.
 
   ```yaml
   services:
-    web:
-      image: my-web-app:0.1.0
+    api:
+      image: my-api-app:0.1.0
   ```
   
   Compose uses the specified image.
@@ -1162,11 +1162,11 @@ A service can use an existing image or define how its image should be built.
   
   ```yaml
   services:
-    web:
+    api:
       build:
-        context: ./web
+        context: ./api-app
         dockerfile: Dockerfile
-      image: my-web-app:0.1.0
+      image: my-api-app:0.1.0
   ```
   Here:
     - `build` - tells Compose how to build the image;
@@ -1185,6 +1185,55 @@ A service can use an existing image or define how its image should be built.
     Without `--build`, `docker compose up` does not necessarily rebuild an image
     just because the application source has changed.
 
+###### Ports
+
+The application itself determines which port it listens on inside the container.
+
+The `ports` property does not configure the application's listening port.
+It publishes a container port on the host.
+
+`ports` is required when a container port needs to be published outside the Docker network,
+for example, so that an application running on the host can connect to it.
+
+
+- A specific host port can be assigned explicitly
+
+  ```yaml
+  ports:
+    - "8080:80"
+  ```
+  
+  Here, host port `8080` is mapped to container port `80`.
+
+
+- If only the container port is specified
+
+  ```yaml
+  ports:
+    - "80"
+  ```
+  
+  Docker publishes container port `80` on an automatically assigned host port. The assigned port can be displayed with 
+  
+  ```console
+  $ docker compose port <service> 80
+  ```
+
+- Publishing a port is not required for communication between services on the same Docker network.
+  For example, if `api` listens on port `8000`, another service on the same network can access it directly
+
+  ```yaml
+  http://api:8000
+  ```
+  
+  without declaring
+  
+  ``` 
+  ports:
+    - "8000"
+  ```
+
+
 ##### Networks
 
 `networks` defines Docker networks that services can use to communicate with each other.
@@ -1193,8 +1242,8 @@ A service can use an existing image or define how its image should be built.
 
   ```yaml
   services:
-    web:
-      image: my-web-app:0.1.0
+    api:
+      image: my-api-app:0.1.0
       networks:
         - app-net
   
@@ -1214,7 +1263,7 @@ Compose creates the declared networks and connects the services containers to th
   - If a network is declared as `external`, Compose does not create it.
     The network must already exist before the application is started.
   - The `name` property specifies the actual Docker network name.
-    If `name` is omitted for an extrenal resource, 
+    If `name` is omitted for an external resource, 
     Compose uses the Compose resource key as the actual Docker resource name.
 
 
