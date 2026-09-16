@@ -46,8 +46,8 @@ Alternatively, you can stop the application in another terminal in the same dire
   ```
 
 - The `--build` option tells Compose to build the service images before starting the containers.
-Without `--build`, Compose can reuse already existing images instead of rebuilding them 
-after changes to the application source or Dockerfiles.
+  Without `--build`, Compose can reuse already existing images instead of rebuilding them 
+  after changes to the application source or Dockerfiles.
 
 ### Detached Mode and Logs
 
