@@ -95,9 +95,9 @@ Alternatively, you can stop the application in another terminal in the same dire
 
 
 - Named volumes are not removed by default, so persistent application data is preserved.
-The following command removes the named volumes as well
+The following command with the `-v` (`--volumes`) option removes the named volumes as well
   ```console
-  $ docker compose down --volumes
+  $ docker compose down -v
   [+] down 4/4
    ✔ Container 06-1--running-multi-container-apps-with-docker-compose-app-1          Removed                          0.0s
    ✔ Container 06-1--running-multi-container-apps-with-docker-compose-data-service-1 Removed                          0.0s
@@ -109,6 +109,15 @@ The following command removes the named volumes as well
   - service containers;
   - Compose-managed networks;
   - named volumes declared by the Compose application.
+
+
+- Note:
+  - Compose does not remove external networks or external volumes.
+  - Resources declared with `external: true` are managed outside the Compose application.
+  - Compose uses these resources but does not own their lifecycle,
+    so they are not removed by `docker compose down`.
+  - External volumes are preserved even when `-v` (`--volumes`) is specified.
+
 
 ### Scale
 
