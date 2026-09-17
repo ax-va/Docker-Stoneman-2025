@@ -158,3 +158,11 @@ but a service does not necessarily correspond to only one container.
   Compose removes the extra container instances and ensure 
   that the requested number of containers for the `app` service is running.
   In this examole, `app-2` and `app-3` are removed, while the existing stopped `app-1` is started again.
+
+
+- Note:
+  - Compose changes the number of container instances to match the requested scale.
+  - When scaling up, existing running containers remain running 
+    and Compose creates additional containers to reach the requested scale.
+  - When scaling down, Compose removes the extra container instances.
+  - If an existing container that should remain is stopped, Compose starts it again to reach the requested scale.
