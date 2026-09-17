@@ -8,9 +8,9 @@
 $ docker compose up --build
 ...
 Attaching to app-1, data-service-1
-Container 06-1--running-multi-container-apps-with-docker-compose-data-service-1 Waiting 
+Container 06-1--running-multi-container-apps-with-docker-compose--detached-mode--logs--scale-data-service-1 Waiting 
 data-service-1  | 127.0.0.1 - - [11/Sep/2026 21:35:49] "GET /health HTTP/1.1" 200 -
-Container 06-1--running-multi-container-apps-with-docker-compose-data-service-1 Healthy 
+Container 06-1--running-multi-container-apps-with-docker-compose--detached-mode--logs--scale-data-service-1 Healthy 
 data-service-1  | 172.18.0.3 - - [11/Sep/2026 21:35:50] "GET /data HTTP/1.1" 200 -
 app-1           | Data 'fetched data' are fetched and saved in the volume.
 app-1 exited with code 0                                                                                                                                                                                                            
@@ -87,6 +87,10 @@ Alternatively, you can stop the application in another terminal in the same dire
 
   ```console
   $ docker compose down
+  [+] down 3/3
+   ✔ Container 06-2--running-multi-container-apps-with-docker-compose--detached-mode--logs--scale-app-1          Removed                          0.0s
+   ✔ Container 06-2--running-multi-container-apps-with-docker-compose--detached-mode--logs--scale-data-service-1 Removed                          0.0s
+   ✔ Network 06-2--running-multi-container-apps-with-docker-compose--detached-mode--logs--scale_app-net          Removed                          0.1s
   ```
   
   stops and removes the resources created for the Compose application. By default, it removes:
@@ -99,10 +103,10 @@ The following command with the `-v` (`--volumes`) option removes the named volum
   ```console
   $ docker compose down -v
   [+] down 4/4
-   ✔ Container 06-1--running-multi-container-apps-with-docker-compose-app-1          Removed                          0.0s
-   ✔ Container 06-1--running-multi-container-apps-with-docker-compose-data-service-1 Removed                          0.0s
-   ✔ Volume 06-1--running-multi-container-apps-with-docker-compose_app-data          Removed                          0.0s
-   ✔ Network 06-1--running-multi-container-apps-with-docker-compose_app-net          Removed                          0.1s
+   ✔ Container 06-1--running-multi-container-apps-with-docker-compose--detached-mode--logs--scale-app-1          Removed                          0.0s
+   ✔ Container 06-1--running-multi-container-apps-with-docker-compose--detached-mode--logs--scale-data-service-1 Removed                          0.0s
+   ✔ Volume 06-1--running-multi-container-apps-with-docker-compose--detached-mode--logs--scale_app-data          Removed                          0.0s
+   ✔ Network 06-1--running-multi-container-apps-with-docker-compose--detached-mode--logs--scale_app-net          Removed                          0.1s
   ```
   
   This removes:
